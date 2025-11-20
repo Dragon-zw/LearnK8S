@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vendor-portal
+  labels:
+    {{- include "zadig.microservice.vendor-portal.labels" . | nindent 4 }}
+{{- if .Values.additionalLabels }}
+{{ toYaml .Values.additionalLabels | trimSuffix "\n" | indent 4 }}
+{{- end }}
+{{- if .Values.additionalAnnotations }}
+  annotations:
+{{ toYaml .Values.additionalAnnotations | trimSuffix "\n" | indent 4 }}
+{{- end }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "zadig.microservice.vendor-portal.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/vendor-portal-configmap.yaml") . | sha256sum }}
+{{- if .Values.podAnnotations }}
+{{ toYaml .Values.podAnnotations | trimSuffix "\n" | indent 8 }}
+{{- end }}
+      labels:
+        {{- include "zadig.microservice.vendor-portal.selectorLabels" . | nindent 8 }}
+{{- if .Values.podLabels }}
+{{ toYaml .Values.podLabels | indent 8 }}
+{{- end }}
+    spec:
+      imagePullSecrets:
+        - name: ee-registry-secret
+      containers:
+        - name:  vendor-portal
+          image: {{ .Values.global.image.registry }}/{{ .Values.microservice.vendorPortal.image.repository }}:{{ .Values.microservice.vendorPortal.image.tag | default .Chart.AppVersion }}
+          imagePullPolicy: {{ .Values.global.image.pullPolicy | default "Always" }}
+          ports:
+            - protocol: TCP
+              containerPort: 80
+          volumeMounts:
+            - name: vendor-portal-config
+              mountPath: /etc/nginx/conf.d
+          resources:
+            limits:
+              cpu: {{ .Values.microservice.vendorPortal.resources.limits.cpu }}
+              memory: {{ .Values.microservice.vendorPortal.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.microservice.vendorPortal.resources.requests.cpu }}
+              memory: {{ .Values.microservice.vendorPortal.resources.requests.memory }}
+{{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+{{- end }}
+{{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+{{- end }}
+{{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+{{- end }}
+      volumes:
+        - name: vendor-portal-config
+          configMap:
+            name: vendor-portal-config

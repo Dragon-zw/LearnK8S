@@ -1,0 +1,93 @@
+# ci/minio-values.yaml
+loki:
+  structuredConfig:
+    memberlist:
+      join_members:
+        - loki-loki-distributed-memberlist
+      bind_addr:
+        - 0.0.0.0
+      advertise_addr: ${POD_IP}
+      advertise_port: 7946
+    ingester:
+      max_transfer_retries: 0
+      chunk_idle_period: 1h
+      chunk_target_size: 1536000
+      max_chunk_age: 1h
+    storage_config:
+      aws:
+        endpoint: minio.logging.svc.cluster.local:9000 # 使用 MiniO API 调用端口
+        insecure: true
+        bucketnames: loki-data
+        access_key_id: admin
+        secret_access_key: GlE0rh4igD
+        s3forcepathstyle: true
+      boltdb_shipper:
+        shared_store: s3
+    schema_config:
+      configs:
+        - from: 2022-06-21
+          store: boltdb-shipper
+          object_store: s3
+          schema: v12
+          index:
+            prefix: loki_index_
+            period: 24h
+
+distributor:
+  replicas: 2
+  maxUnavailable: 1
+  extraArgs:
+    - -config.expand-env=true
+  extraEnv:
+    - name: POD_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.podIP
+
+ingester:
+  replicas: 2
+  maxUnavailable: 1
+  extraArgs:
+    - -config.expand-env=true
+  extraEnv:
+    - name: POD_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.podIP
+  persistence:
+    enabled: true
+    size: 1Gi
+    storageClass: nfs-csi # local-path # 指定 StorageClass
+
+querier:
+  replicas: 2
+  maxUnavailable: 1
+  extraArgs:
+    - -config.expand-env=true
+  extraEnv:
+    - name: POD_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.podIP
+  persistence:
+    enabled: true
+    size: 1Gi
+    storageClass: nfs-csi # local-path # 指定 StorageClass
+
+queryFrontend:
+  replicas: 2
+  maxUnavailable: 1
+  extraArgs:
+    - -config.expand-env=true
+  extraEnv:
+    - name: POD_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.podIP
+
+gateway:
+  nginxConfig:
+    httpSnippet: |-
+      client_max_body_size 100M;
+    serverSnippet: |-
+      client_max_body_size 100M;

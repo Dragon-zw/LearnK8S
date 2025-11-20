@@ -1,0 +1,54 @@
+# ci/minio-values.yaml
+loki:
+  structuredConfig:
+    ingester:
+      max_transfer_retries: 0
+      chunk_idle_period: 1h
+      chunk_target_size: 1536000
+      max_chunk_age: 1h
+    storage_config:
+      aws:
+        endpoint: minio.logging.svc.cluster.local:9000 # 使用 MiniO API 调用端口
+        insecure: true
+        bucketnames: loki-data
+        access_key_id: myaccessKey
+        secret_access_key: mysecretKey
+        s3forcepathstyle: true
+      boltdb_shipper:
+        shared_store: s3
+    schema_config:
+      configs:
+        - from: 2022-06-21
+          store: boltdb-shipper
+          object_store: s3
+          schema: v12
+          index:
+            prefix: loki_index_
+            period: 24h
+
+distributor:
+  replicas: 2
+
+ingester:
+  replicas: 2
+  persistence:
+    enabled: true
+    size: 1Gi
+    storageClass: nfs-csi # local-path # 指定 StorageClass
+
+querier:
+  replicas: 2
+  persistence:
+    enabled: true
+    size: 1Gi
+    storageClass: nfs-csi # local-path # 指定 StorageClass
+
+queryFrontend:
+  replicas: 2
+
+gateway:
+  nginxConfig:
+    httpSnippet: |-
+      client_max_body_size 100M;
+    serverSnippet: |-
+      client_max_body_size 100M;

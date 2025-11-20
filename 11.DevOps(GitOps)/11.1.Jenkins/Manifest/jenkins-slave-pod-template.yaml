@@ -1,0 +1,75 @@
+# jenkins-slave-pod-template.yaml
+# 这是 Jenkins Kubernetes 插件的 Pod 模板配置示例
+# 需要在 Jenkins UI 中配置：Manage Jenkins -> Configure System -> Cloud -> Kubernetes
+
+# Pod 模板配置：
+# Name: docker
+# Namespace: kube-ops
+# Labels: docker
+
+# 容器模板 1 - JNLP (Jenkins agent)
+# Name: jnlp
+# Docker image: jenkins/inbound-agent:latest
+# Working directory: /home/jenkins/agent
+# Command to run: (留空)
+# Arguments to pass to the command: (留空)
+
+# 容器模板 2 - Docker client
+# Name: docker
+# Docker image: docker:27-cli  # 使用最新的 Docker CLI 镜像
+# Working directory: /home/jenkins/agent
+# Command to run: cat
+# Arguments to pass to the command: (留空)
+# Allocate pseudo-TTY: ✓ (勾选)
+
+# 环境变量（添加到 docker 容器）：
+# DOCKER_HOST: tcp://docker-dind.kube-ops.svc.cluster.local:2375
+
+# Volume 挂载（可选）：
+# Empty Dir Volume:
+#   - Mount path: /home/jenkins/agent
+
+---
+# 或者使用 ConfigMap 方式配置 Pod 模板
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jenkins-slave-docker-template
+  namespace: kube-ops
+data:
+  pod-template.yaml: |
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      labels:
+        jenkins: slave
+        jenkins/label: docker
+    spec:
+      containers:
+      - name: jnlp
+        image: jenkins/inbound-agent:latest
+        workingDir: /home/jenkins/agent
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+      - name: docker
+        image: docker:27-cli
+        command:
+        - cat
+        tty: true
+        env:
+        - name: DOCKER_HOST
+          value: tcp://docker-dind.kube-ops.svc.cluster.local:2375
+        workingDir: /home/jenkins/agent
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+      restartPolicy: Never

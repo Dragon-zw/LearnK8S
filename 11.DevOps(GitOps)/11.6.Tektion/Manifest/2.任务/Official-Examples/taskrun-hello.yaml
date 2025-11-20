@@ -1,0 +1,8 @@
+# taskrun-hello.yaml
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: hello-task-run
+spec:
+  taskRef: # 关联需要执行的 Task 任务
+    name: hello

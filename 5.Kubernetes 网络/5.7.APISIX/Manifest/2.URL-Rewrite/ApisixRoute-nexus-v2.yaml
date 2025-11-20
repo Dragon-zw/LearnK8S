@@ -1,0 +1,18 @@
+# ApisixRoute-nexus-v2.yaml
+apiVersion: apisix.apache.org/v2beta2
+kind: ApisixRoute
+metadata:
+  name: nexus
+  namespace: default
+spec:
+  http:
+    - name: root
+      match:
+        hosts:
+          - ops.qikqiak.com
+        paths:
+          - '/nexus*'
+          - '/static/*'
+      backends:
+        - serviceName: nexus
+          servicePort: 8081

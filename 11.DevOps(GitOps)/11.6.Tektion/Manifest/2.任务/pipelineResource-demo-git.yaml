@@ -1,0 +1,13 @@
+# pipelineResource-demo-git.yaml
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: git-res
+  namespace: default
+spec:
+  params:
+  - name: url
+    value: https://gitee.com/dragon-zw/tekton-demo # https://github.com/cnych/tekton-demo
+  - name: revision
+    value: master
+  type: git

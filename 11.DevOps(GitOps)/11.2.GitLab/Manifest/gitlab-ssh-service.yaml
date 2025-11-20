@@ -1,0 +1,17 @@
+# gitlab-ssh-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: gitlab-ssh
+  namespace: kube-ops
+  labels:
+    name: gitlab
+spec:
+  ports:
+    - name: ssh
+      port: 22
+      targetPort: ssh
+      nodePort: 30022
+  type: NodePort
+  selector:
+    name: gitlab

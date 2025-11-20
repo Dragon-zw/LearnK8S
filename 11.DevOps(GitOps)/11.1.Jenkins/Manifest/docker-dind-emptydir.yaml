@@ -1,0 +1,55 @@
+# docker-dind-emptydir.yaml
+# 使用 emptyDir 而不是 PVC，支持 overlay2
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: docker-dind
+  namespace: kube-ops
+  labels:
+    app: docker-dind
+spec:
+  selector:
+    matchLabels:
+      app: docker-dind
+  template:
+    metadata:
+      labels:
+        app: docker-dind
+    spec:
+      containers:
+        - image: docker:dind
+          name: docker-dind
+          args:
+            - --registry-mirror=https://ot2k4d59.mirror.aliyuncs.com/
+          env:
+            - name: DOCKER_DRIVER
+              value: overlay2
+            - name: DOCKER_HOST
+              value: tcp://0.0.0.0:2375
+            - name: DOCKER_TLS_CERTDIR
+              value: ''
+          volumeMounts:
+            - name: docker-graph-storage
+              mountPath: /var/lib/docker/
+          ports:
+            - name: daemon-port
+              containerPort: 2375
+          securityContext:
+            privileged: true
+      volumes:
+        - name: docker-graph-storage
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: docker-dind
+  namespace: kube-ops
+  labels:
+    app: docker-dind
+spec:
+  ports:
+    - port: 2375
+      targetPort: 2375
+  selector:
+    app: docker-dind

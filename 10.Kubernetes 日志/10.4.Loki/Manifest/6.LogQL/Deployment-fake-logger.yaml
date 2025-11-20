@@ -1,0 +1,29 @@
+# Deployment-fake-logger.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ labels:
+  app: fake-logger
+  environment: development
+ name: fake-logger
+spec:
+ selector:
+  matchLabels:
+   app: fake-logger
+   environment: development
+ template:
+  metadata:
+   labels:
+    app: fake-logger
+    environment: development
+  spec:
+   containers:
+   - image: thorstenhans/fake-logger:0.0.2
+     name: fake-logger
+     resources:
+      requests:
+       cpu: 10m
+       memory: 32Mi
+      limits:
+       cpu: 10m
+       memory: 32Mi

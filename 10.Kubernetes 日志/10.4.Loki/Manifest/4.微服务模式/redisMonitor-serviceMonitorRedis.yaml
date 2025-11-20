@@ -1,0 +1,17 @@
+# redisMonitor-serviceMonitorRedis.yaml
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: redis
+  namespace: logging
+  labels:
+    app: redis
+spec:
+  selector:
+    matchLabels:
+      app: redis
+  endpoints:
+    - port: prom
+      interval: 30s
+      path: /metrics

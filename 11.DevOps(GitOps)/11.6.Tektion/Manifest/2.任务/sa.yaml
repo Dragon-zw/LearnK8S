@@ -1,0 +1,7 @@
+# sa.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: build-sa
+secrets:
+  - name: harbor-auth

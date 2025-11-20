@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plutus-vendor
+  labels:
+    {{- include "zadig.microservice.plutus-vendor.labels" . | nindent 4 }}
+{{- if .Values.additionalLabels }}
+{{ toYaml .Values.additionalLabels | trimSuffix "\n" | indent 4 }}
+{{- end }}
+{{- if .Values.additionalAnnotations }}
+  annotations:
+{{ toYaml .Values.additionalAnnotations | trimSuffix "\n" | indent 4 }}
+{{- end }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "zadig.microservice.plutus-vendor.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "zadig.microservice.plutus-vendor.labels" . | nindent 8 }}
+{{- if .Values.podLabels }}
+{{ toYaml .Values.podLabels | indent 8 }}
+{{- end }}
+{{- if .Values.podAnnotations }}
+      annotations:
+{{ toYaml .Values.podAnnotations | trimSuffix "\n" | indent 8 }}
+{{- end }}
+    spec:
+      imagePullSecrets:
+        - name: ee-registry-secret
+      serviceAccountName: {{ include "zadig.serviceAccountName" .}}
+      containers:
+        - image: {{ .Values.global.image.registry }}/{{ .Values.microservice.plutusVendor.image.repository }}:{{ .Values.microservice.plutusVendor.image.tag | default .Chart.AppVersion }}
+          imagePullPolicy: {{ .Values.global.image.pullPolicy | default "Always" }}
+          name: plutus-vendor
+          livenessProbe:
+            httpGet:
+              path: /api/plutus/health
+              port: 29000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /api/plutus/health
+              port: 29000
+            initialDelaySeconds: 10
+            periodSeconds: 2
+          envFrom:
+            - configMapRef:
+                name: plutus-vendor-config
+          ports:
+            - protocol: TCP
+              containerPort: 29000
+          resources:
+            limits:
+              cpu: {{ .Values.microservice.plutusVendor.resources.limits.cpu }}
+              memory: {{ .Values.microservice.plutusVendor.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.microservice.plutusVendor.resources.requests.cpu }}
+              memory: {{ .Values.microservice.plutusVendor.resources.requests.memory }}
+{{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+{{- end }}
+{{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+{{- end }}
+{{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+{{- end }}
