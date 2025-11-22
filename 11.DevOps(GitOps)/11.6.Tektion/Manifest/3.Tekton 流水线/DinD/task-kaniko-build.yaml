@@ -1,0 +1,58 @@
+# task-kaniko-build.yaml
+# 使用 Kaniko 替代 DinD 的方案,更适合 Kubernetes 环境
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: kaniko-build-push
+spec:
+  resources:
+    inputs:
+      - name: source
+        type: git
+  params:
+    - name: image
+      description: Reference of the image kaniko will produce.
+    - name: dockerfile
+      description: Path to the Dockerfile to build.
+      default: ./Dockerfile
+    - name: context
+      description: Path to the directory to use as context.
+      default: .
+    - name: build_extra_args
+      description: Extra parameters passed for the build command.
+      default: ''
+    - name: insecure_registry
+      description: Allows pushing to an insecure registry
+      default: 'false'
+    - name: registry_url
+      description: Private docker images registry url
+    - name: registry_mirror
+      description: Docker registry mirror
+      default: ''
+  steps:
+    - name: build-and-push
+      image: gcr.io/kaniko-project/executor:latest
+      imagePullPolicy: IfNotPresent
+      env:
+        - name: DOCKER_CONFIG
+          value: /tekton/home/.docker
+      workingDir: $(resources.inputs.source.path)
+      command:
+        - /kaniko/executor
+      args:
+        - --dockerfile=$(params.dockerfile)
+        - --context=$(params.context)
+        - --destination=$(params.image)
+        - --insecure=$(params.insecure_registry)
+        - --skip-tls-verify=$(params.insecure_registry)
+        - --cache=true
+        - --cache-ttl=24h
+        - $(params.build_extra_args)
+      volumeMounts:
+        - name: docker-config
+          mountPath: /tekton/home/.docker
+  volumes:
+    - name: docker-config
+      secret:
+        secretName: docker-credentials
+        optional: true
