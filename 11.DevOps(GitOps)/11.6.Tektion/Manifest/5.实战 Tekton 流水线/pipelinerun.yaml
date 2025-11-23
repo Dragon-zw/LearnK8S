@@ -1,0 +1,33 @@
+# pipelinerun.yaml
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: pipelinerun
+spec:
+  serviceAccountName: tekton-build-sa
+  podTemplate:
+    securityContext:
+      fsGroup: 65532  # 设置文件系统组 ID，使 PVC 对非 root 用户可写
+  pipelineRef:
+    name: pipeline
+  workspaces:
+    - name: go-repo-pvc
+      persistentVolumeClaim:
+        claimName: go-repo-pvc
+  params:
+    - name: git_url
+      value: http://gitlab.k8s.local/course/devops-demo.git
+    - name: image
+      value: 'harbor.k8s.local/course/devops-demo:v0.1.0'
+    - name: charts_dir
+      value: './helm'
+    - name: release_name
+      value: devops-demo
+    - name: release_namespace
+      value: 'kube-ops'
+    - name: overwrite_values
+      value: 'image.repository=harbor.k8s.local/course/devops-demo,image.tag=v0.1.0'
+    - name: values_file
+      value: 'my-values.yaml'
+    - name: registry_url
+      value: 'harbor.k8s.local'
