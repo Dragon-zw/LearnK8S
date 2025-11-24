@@ -1,0 +1,19 @@
+image:
+  repository: harbor.k8s.local/course/devops-demo
+  tag: '95feb33402522d7533b31cc7a5472c75b062e5fc'
+  pullPolicy: IfNotPresent
+  imagePullSecrets:
+  - name: harbor-auth
+ingress:
+  enabled: true
+  ingressClassName: nginx
+  path: /
+  hosts:
+  - gitops-demo.k8s.local
+resources:
+  limits:
+    cpu: 50m
+    memory: 128Mi
+  requests:
+    cpu: 50m
+    memory: 128Mi

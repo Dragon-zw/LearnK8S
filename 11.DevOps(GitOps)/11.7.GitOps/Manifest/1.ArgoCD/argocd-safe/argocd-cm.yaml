@@ -1,0 +1,14 @@
+# argocd-cm.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+  name: argocd-cm
+data:
+  helm.valuesFileSchemes: >-
+    secrets+gpg-import, secrets+gpg-import-kubernetes,
+    secrets+age-import, secrets+age-import-kubernetes,
+    secrets,
+    https

@@ -1,0 +1,69 @@
+# ServiceMonitor-Prometheus-Operator.yaml
+# ServiceMonitor for argocd-server-metrics (port 8083)
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: argocd-server-metrics
+  namespace: argocd
+  labels:
+    release: prometheus   # 请与你的 Prometheus 实例的 serviceMonitorSelector 匹配
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-server-metrics
+      app.kubernetes.io/component: server
+      app.kubernetes.io/part-of: argocd
+  endpoints:
+  - port: "8083"          # 对应 Service 的端口名或端口号
+    path: /metrics
+    scheme: http
+    interval: 15s
+  namespaceSelector:
+    matchNames:
+    - argocd
+---
+# ServiceMonitor for argocd-repo-server (port 8084)
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: argocd-repo-server-metrics
+  namespace: argocd
+  labels:
+    release: prometheus   # 请与你的 Prometheus 实例的 serviceMonitorSelector 匹配
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-repo-server
+      app.kubernetes.io/component: repo-server
+      app.kubernetes.io/part-of: argocd
+  endpoints:
+  - port: "8084"
+    path: /metrics
+    scheme: http
+    interval: 15s
+  namespaceSelector:
+    matchNames:
+    - argocd
+---
+# ServiceMonitor for argocd-metrics (默认 /metrics 与同名端口)
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: argocd-metrics
+  namespace: argocd
+  labels:
+    release: prometheus   # 请与你的 Prometheus 实例的 serviceMonitorSelector 匹配
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argocd-metrics
+      app.kubernetes.io/component: metrics
+      app.kubernetes.io/part-of: argocd
+  endpoints:
+  - port: "metrics"       # 若 Service 端口名为 metrics；如为数字端口，请改为 "8082" 等实际端口
+    path: /metrics
+    scheme: http
+    interval: 15s
+  namespaceSelector:
+    matchNames:
+    - argocd

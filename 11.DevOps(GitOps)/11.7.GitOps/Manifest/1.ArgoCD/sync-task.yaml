@@ -1,0 +1,40 @@
+# sync-task.yaml
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: sync
+spec:
+  volumes:
+    - name: argocd-secret
+      secret:
+        secretName: $(inputs.params.argocd_secret)
+  params:
+    - name: argocd_url
+      description: 'The URL of the ArgoCD server'
+    - name: argocd_secret
+      description: 'The secret containing the username and password for the tekton task to connect to argo'
+    - name: image_tag
+      description: "The docker image tag to update"
+      default: "v0.1.0"
+    - name: app_name
+      description: 'The name of the argo app to update'
+    - name: app_revision
+      default: 'HEAD'
+      description: 'The revision of the argo app to update'
+  steps:
+    - name: deploy
+      image: argoproj/argocd:v2.4.9 # 需要有 argocd 命令的镜像
+      volumeMounts:
+        - name: argocd-secret
+          mountPath: /var/secret
+      command:
+        - sh
+      args:
+        - -ce
+        - |
+          set -e
+          echo "starting argocd sync app"
+          argocd login --insecure $(params.argocd_url) --username $(/bin/cat /var/secret/username) --password $(/bin/cat /var/secret/password)
+          argocd app set $(params.app_name) -p image.tag=$(params.image_tag) # 将镜像 Tag 进行更新
+          argocd app sync $(params.app_name) --revision $(params.app_revision)
+          argocd app wait $(params.app_name) --health

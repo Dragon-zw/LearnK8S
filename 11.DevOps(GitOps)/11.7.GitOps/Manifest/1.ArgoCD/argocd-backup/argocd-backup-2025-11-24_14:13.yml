@@ -1,0 +1,362 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"ConfigMap","metadata":{"annotations":{},"labels":{"app.kubernetes.io/name":"argocd-cm","app.kubernetes.io/part-of":"argocd"},"name":"argocd-cm","namespace":"argocd"}}
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+  name: argocd-cm
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"ConfigMap","metadata":{"annotations":{},"labels":{"app.kubernetes.io/name":"argocd-rbac-cm","app.kubernetes.io/part-of":"argocd"},"name":"argocd-rbac-cm","namespace":"argocd"}}
+  labels:
+    app.kubernetes.io/name: argocd-rbac-cm
+    app.kubernetes.io/part-of: argocd
+  name: argocd-rbac-cm
+---
+apiVersion: v1
+data:
+  ssh_known_hosts: |-
+    bitbucket.org ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAubiN81eDcafrgMeLzaFPsw2kNvEcqTKl/VqLat/MaB33pZy0y3rJZtnqwR2qOOvbwKZYKiEO1O6VqNEBxKvJJelCq0dTXWT5pbO2gDXC6h6QDXCaHo6pOHGPUy+YBaGQRGuSusMEASYiWunYN0vCAI8QaXnWMXNMdFP3jHAJH0eDsoiGnLPBlBp4TNm6rYI74nMzgz3B9IikW4WVK+dc8KZJZWYjAuORU3jc1c/NPskD2ASinf8v3xnfXeukU0sJ5N6m5E8VLjObPEO+mN2t/FZTMZLiFqPWc/ALSqnMnnhwrNi2rbfg/rd/IpL8Le3pSBne8+seeFVBoGqzHM9yXw==
+    github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==
+    gitlab.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFSMqzJeV9rUzU4kWitGjeR4PWSa29SPqJ1fVkhtj3Hw9xjLVXVYrU9QlYWrOLXBpQ6KWjbjTDTdDkoohFzgbEY=
+    gitlab.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAfuCHKVTjquxvt6CM6tdG4SLp1Btn/nOeHHE5UOzRdf
+    gitlab.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsj2bNKTBSpIYDEGk9KxsGh3mySTRgMtXL583qmBpzeQ+jqCMRgBqB98u3z++J1sKlXHWfM9dyhSevkMwSbhoR8XIq/U0tCNyokEi/ueaBMCvbcTHhO7FcwzY92WK4Yt0aGROY5qX2UKSeOvuP4D6TPqKF1onrSzH9bx9XUf2lEdWT/ia1NEKjunUqu1xOB/StKDHMoX4/OKyIzuS0q/T1zOATthvasJFoPrAjkohTyaDUz2LN5JoH839hViyEG82yB+MjcFV5MU3N1l1QL3cVUCh93xSaua1N85qivl+siMkPGbO5xR/En4iEY6K2XPASUEMaieWVNTRCtJ4S8H+9
+    ssh.dev.azure.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7Hr1oTWqNqOlzGJOfGJ4NakVyIzf1rXYd4d7wo6jBlkLvCA4odBlL0mDUyZ0/QUfTTqeu+tm22gOsv+VrVTMk6vwRU75gY/y9ut5Mb3bR5BV58dKXyq9A9UeB5Cakehn5Zgm6x1mKoVyf+FFn26iYqXJRgzIZZcZ5V6hrE0Qg39kZm4az48o0AUbf6Sp4SLdvnuMa2sVNwHBboS7EJkm57XQPVU3/QpyNLHbWDdzwtrlS+ez30S3AdYhLKEOxAG8weOnyrtLJAUen9mTkol8oII1edf7mWWbWVf0nBmly21+nZcmCTISQBtdcyPaEno7fFQMDD26/s0lfKob4Kw8H
+    vs-ssh.visualstudio.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7Hr1oTWqNqOlzGJOfGJ4NakVyIzf1rXYd4d7wo6jBlkLvCA4odBlL0mDUyZ0/QUfTTqeu+tm22gOsv+VrVTMk6vwRU75gY/y9ut5Mb3bR5BV58dKXyq9A9UeB5Cakehn5Zgm6x1mKoVyf+FFn26iYqXJRgzIZZcZ5V6hrE0Qg39kZm4az48o0AUbf6Sp4SLdvnuMa2sVNwHBboS7EJkm57XQPVU3/QpyNLHbWDdzwtrlS+ez30S3AdYhLKEOxAG8weOnyrtLJAUen9mTkol8oII1edf7mWWbWVf0nBmly21+nZcmCTISQBtdcyPaEno7fFQMDD26/s0lfKob4Kw8H
+    github.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=
+    github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","data":{"ssh_known_hosts":"bitbucket.org ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAubiN81eDcafrgMeLzaFPsw2kNvEcqTKl/VqLat/MaB33pZy0y3rJZtnqwR2qOOvbwKZYKiEO1O6VqNEBxKvJJelCq0dTXWT5pbO2gDXC6h6QDXCaHo6pOHGPUy+YBaGQRGuSusMEASYiWunYN0vCAI8QaXnWMXNMdFP3jHAJH0eDsoiGnLPBlBp4TNm6rYI74nMzgz3B9IikW4WVK+dc8KZJZWYjAuORU3jc1c/NPskD2ASinf8v3xnfXeukU0sJ5N6m5E8VLjObPEO+mN2t/FZTMZLiFqPWc/ALSqnMnnhwrNi2rbfg/rd/IpL8Le3pSBne8+seeFVBoGqzHM9yXw==\ngithub.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==\ngitlab.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFSMqzJeV9rUzU4kWitGjeR4PWSa29SPqJ1fVkhtj3Hw9xjLVXVYrU9QlYWrOLXBpQ6KWjbjTDTdDkoohFzgbEY=\ngitlab.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAfuCHKVTjquxvt6CM6tdG4SLp1Btn/nOeHHE5UOzRdf\ngitlab.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsj2bNKTBSpIYDEGk9KxsGh3mySTRgMtXL583qmBpzeQ+jqCMRgBqB98u3z++J1sKlXHWfM9dyhSevkMwSbhoR8XIq/U0tCNyokEi/ueaBMCvbcTHhO7FcwzY92WK4Yt0aGROY5qX2UKSeOvuP4D6TPqKF1onrSzH9bx9XUf2lEdWT/ia1NEKjunUqu1xOB/StKDHMoX4/OKyIzuS0q/T1zOATthvasJFoPrAjkohTyaDUz2LN5JoH839hViyEG82yB+MjcFV5MU3N1l1QL3cVUCh93xSaua1N85qivl+siMkPGbO5xR/En4iEY6K2XPASUEMaieWVNTRCtJ4S8H+9\nssh.dev.azure.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7Hr1oTWqNqOlzGJOfGJ4NakVyIzf1rXYd4d7wo6jBlkLvCA4odBlL0mDUyZ0/QUfTTqeu+tm22gOsv+VrVTMk6vwRU75gY/y9ut5Mb3bR5BV58dKXyq9A9UeB5Cakehn5Zgm6x1mKoVyf+FFn26iYqXJRgzIZZcZ5V6hrE0Qg39kZm4az48o0AUbf6Sp4SLdvnuMa2sVNwHBboS7EJkm57XQPVU3/QpyNLHbWDdzwtrlS+ez30S3AdYhLKEOxAG8weOnyrtLJAUen9mTkol8oII1edf7mWWbWVf0nBmly21+nZcmCTISQBtdcyPaEno7fFQMDD26/s0lfKob4Kw8H\nvs-ssh.visualstudio.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7Hr1oTWqNqOlzGJOfGJ4NakVyIzf1rXYd4d7wo6jBlkLvCA4odBlL0mDUyZ0/QUfTTqeu+tm22gOsv+VrVTMk6vwRU75gY/y9ut5Mb3bR5BV58dKXyq9A9UeB5Cakehn5Zgm6x1mKoVyf+FFn26iYqXJRgzIZZcZ5V6hrE0Qg39kZm4az48o0AUbf6Sp4SLdvnuMa2sVNwHBboS7EJkm57XQPVU3/QpyNLHbWDdzwtrlS+ez30S3AdYhLKEOxAG8weOnyrtLJAUen9mTkol8oII1edf7mWWbWVf0nBmly21+nZcmCTISQBtdcyPaEno7fFQMDD26/s0lfKob4Kw8H\ngithub.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=\ngithub.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"app.kubernetes.io/name":"argocd-ssh-known-hosts-cm","app.kubernetes.io/part-of":"argocd"},"name":"argocd-ssh-known-hosts-cm","namespace":"argocd"}}
+  labels:
+    app.kubernetes.io/name: argocd-ssh-known-hosts-cm
+    app.kubernetes.io/part-of: argocd
+  name: argocd-ssh-known-hosts-cm
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"ConfigMap","metadata":{"annotations":{},"labels":{"app.kubernetes.io/name":"argocd-tls-certs-cm","app.kubernetes.io/part-of":"argocd"},"name":"argocd-tls-certs-cm","namespace":"argocd"}}
+  labels:
+    app.kubernetes.io/name: argocd-tls-certs-cm
+    app.kubernetes.io/part-of: argocd
+  name: argocd-tls-certs-cm
+---
+apiVersion: v1
+data:
+  admin.password: JDJhJDEwJHVBY2t2M1N2UDNTczU5aWd2R1hRUy5nRWlCbjJ0WG9TcEJjamtJb1cxM3Fxd09OaXlKRkNp
+  admin.passwordMtime: MjAyNS0xMS0yNFQwMzoyODoxMFo=
+  server.secretkey: aUVBcVZWVTdPbXlzNC90em4wczhFWUVqdG9HTU1vR2xWMmZjelh4Uld3TT0=
+  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURZakNDQWtxZ0F3SUJBZ0lRY0tzZHhiVThxTFBTVG5NeWg3YWl5VEFOQmdrcWhraUc5dzBCQVFzRkFEQVMKTVJBd0RnWURWUVFLRXdkQmNtZHZJRU5FTUI0WERUSTFNVEV5TXpFM01qTXhPRm9YRFRJMk1URXlNekUzTWpNeApPRm93RWpFUU1BNEdBMVVFQ2hNSFFYSm5ieUJEUkRDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDCkFRb0NnZ0VCQUovRERJRkdRdDJIWkxkVUkyVmNvUmM2c2ZNNS9EYTF6QmlwV2dZbnV4Z1J5cDJOK2hRdVFDZUkKaUJGOGNkQkhtRFordW9uRjQ4bTJXRmN5aHRqNG05WkZMRFBjUGNjSlBEZHF5NGhoV285ZFBGVm5iRk5wL3lJeApCS0NYdlNMR2VXL0VRbFNiR3MwNUM1dG9ZR0lMQzEyaUR0ajFVOFlrSnZ3YVVYOEhnYzBIaTVObUhhSXVsMGc3CkMwODFhaFdqWEt0NFZYT2EzZUJsUFNmMkFtb2ZnK0dmSnE0Z0V6V2ZwNmRVOGcvZkIxeGxXTnpHMllKMzN2K0YKTVY4WkcydjcvL3NLNXYrSmV4TlcxTTI2OTk5NHJJT2ZObjBpaFJOSlh6M2FuY2M0bDJlTUlsSWtaUmx3ckNodgo0R1UzVU1GcVBGVTFlWWE2TGJyVjd2UjdZZHgyWGZFQ0F3RUFBYU9Cc3pDQnNEQU9CZ05WSFE4QkFmOEVCQU1DCkJhQXdFd1lEVlIwbEJBd3dDZ1lJS3dZQkJRVUhBd0V3REFZRFZSMFRBUUgvQkFJd0FEQjdCZ05WSFJFRWREQnkKZ2dsc2IyTmhiR2h2YzNTQ0RXRnlaMjlqWkMxelpYSjJaWEtDRkdGeVoyOWpaQzF6WlhKMlpYSXVZWEpuYjJOawpnaGhoY21kdlkyUXRjMlZ5ZG1WeUxtRnlaMjlqWkM1emRtT0NKbUZ5WjI5alpDMXpaWEoyWlhJdVlYSm5iMk5rCkxuTjJZeTVqYkhWemRHVnlMbXh2WTJGc01BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQXlGVy9nRjJaalhCVEkKVld6UXhTWHJjMkU4Q2FhdTVGQ2ZUbEdhWm52dzlJQWRTV0IrTGNyVFVlcm1ybXlWNU9NL2psOHJYaWxDZVUzWAprN251Nm0zZ1g5Z0tWbVFmeHJGTkdrUE5VaTh2NlEva0JDNC9pdTZENEhWUStHWitCYU9qeTN3aGRFNTA4elgxCmhYcER4Q2NhQ0cvSUY5T1dSbE80NDRTSnZTUnh4V2hzZWZLMzVoZGg1akhqU0dGNjkyQit5UU4zNXhmM0IycUEKMHY3SXZ4LzZFN0U0V0s1U0x5ZmgxMFc4d01yQ25DMGJTcENNUGdLU1pSWVJtN21NVVl3ZnUzV2poOFJwYnJ1dwpnYVZHUTJTSVdMUzRFTjBXb3RMSlpIMHJTT01NcXhGcTk5MGwxVjd4aGhPVXpBTzhzQnZDZmo3K1U1Tm9IQk5lCnF6MnFwdTd3Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+  tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb2dJQkFBS0NBUUVBbjhNTWdVWkMzWWRrdDFRalpWeWhGenF4OHpuOE5yWE1HS2xhQmllN0dCSEtuWTM2CkZDNUFKNGlJRVh4eDBFZVlObjY2aWNYanliWllWektHMlBpYjFrVXNNOXc5eHdrOE4yckxpR0ZhajEwOFZXZHMKVTJuL0lqRUVvSmU5SXNaNWI4UkNWSnNhelRrTG0yaGdZZ3NMWGFJTzJQVlR4aVFtL0JwUmZ3ZUJ6UWVMazJZZApvaTZYU0RzTFR6VnFGYU5jcTNoVmM1cmQ0R1U5Si9ZQ2FoK0Q0WjhtcmlBVE5aK25wMVR5RDk4SFhHVlkzTWJaCmduZmUvNFV4WHhrYmEvdi8rd3JtLzRsN0UxYlV6YnIzMzNpc2c1ODJmU0tGRTBsZlBkcWR4emlYWjR3aVVpUmwKR1hDc0tHL2daVGRRd1dvOFZUVjVocm90dXRYdTlIdGgzSFpkOFFJREFRQUJBb0lCQUZHOS9wdjJVeWY5cW02Uwp3am1PbDIzSFBsMXdnYmVNZFF6NU9YS0V5Wm1iSU14VVpHd0c3aFJNS3pLbk5hU1h2UzNFMGJURVo3UkJkQm5KClpHMkhabFRQdDdvaEtncTRrdkxYMWFQR0RBdm1iSVJXRW5ycmRQc05rWXlKbHVCQUpNb201TGxkVXUxR0RzWkoKTldkMHR6QUZSd3VER29YNjRXZUVIOGFiRkxMT0pvajhEdUhVQStCcFk0d09waGFSekRPY3JYT210ZktyRzdrRwprTmxJQkh3QW1NQjVWMXo4MUxxWUl0RG1kU1pKR0Zhd0lIY1pkdHovZ21CQWczcE1IL0Fra0ZsQTlsQ3dMZ0lMCnZTbk9xN2JJSlc3S0o0SlBhSStJeUZvM1p5OFhOYjUxUmNYMFlRdm1sVkRrdHJac1Q3dFpiTjJ0WXM1V2hLamcKcGozWUt3RUNnWUVBeks0aTNFa0pSbHpId1JQMjdnSzFNN0VpOXJSZmRIVGRkU0tGUmZJRDkrSFdtRjZHKzE3cwo5Q1FNYllKSm56c3JPZ1ExZ2RicElwTzlBZ2hmNEpCK2JCV0N3YUs1emZHUzYzL1hmSmZhMjhVZEZLbThoZXdKClJhZWJmZy9ySHpOTHNRTnpERUpha2ZBZDNoVjdpSlJxOVV6ODVONThhU015d2FLeW5oZkZXd2tDZ1lFQXg5RzYKcU9zdjFyUVRSMkZlaUg1ZEpQOUdINTlaWTAxS0t2NXVBUWN6dUMvK29nZkJ0YnViLzVaYzZBbTErYU05bk1GNgpPMDVtNWtVU2ZSY2ZFNERENDhCYy9mUmtUdGszNzJVVmloUXhGcXBEUUxVekVvTEg4UXBmVDlJdGkvRnlaWG40Ci9NWW00QnFqNXhOWUs0Vy9mMmhvS0VFUkZsQnBwcTZjR0NnRFhha0NnWUFwVHovejY3MjJlTVZNSDZabnRSNHoKTjU0UjRxZWRUblRmemo3TnRpRzg1dFN6M2VncVZhZEhRdnRMSXMrUEZwY0wxNHVoRCtudnM1ZWpFR09oWkNoUAowaXVZdnluMitibW9WQjMrcEh0a2ZhejMzYVlSOVdpTnFWMUZuUnJjS2pNdG43K1ppczdTdzM2VHN3eENyWW5FCnhtd0lHU3RNNFBDK2lnSzR5NTFtV1FLQmdCWGQrZE5xaVgyeGp6cU1pVS9lcEVyY05NeFpIK3NpRmkvR1VEdUUKa2tCaDREZlRLWHU5NEVDRUwvNmtzV2wwVjlYRHhxQ2UzOXZyU3k2dFRSVlJUaDZxZW9MQU1Bb0E4NEliU2RRbQppWWkxY1U2dmhidE0zSnlnU2ZYdVJsVytRb3FnWW9NbkhESUNPRldkWkZTKytrbnpIeExvcS9vSktzYTI3UlluCnF0YWhBb0dBZkU3M3YrOWxnajhDRW5MYVVpellFbGlyU0s2eTRvdnA3Yk1yUit6YUtsY2tVL21FSnkvcFhhT0EKajJDaDNwRjFwYStmS3Rjc3Bhc2hpZm9zc1lSN1NOL0FTSFpCWHViTWRFWGVKS0VxclR3c3RJaE9hRnJoaG83NAowajBpVElRQzNaRDhjVEp6YndzM2I0b0hyY3hhUUg2dlA5WmZZeU9MNVFIdDdKeDBXNUk9Ci0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
+kind: Secret
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Secret","metadata":{"annotations":{},"labels":{"app.kubernetes.io/name":"argocd-secret","app.kubernetes.io/part-of":"argocd"},"name":"argocd-secret","namespace":"argocd"},"type":"Opaque"}
+  labels:
+    app.kubernetes.io/name: argocd-secret
+    app.kubernetes.io/part-of: argocd
+  name: argocd-secret
+type: Opaque
+---
+apiVersion: v1
+data:
+  config: eyJ0bHNDbGllbnRDb25maWciOnsiaW5zZWN1cmUiOmZhbHNlLCJjZXJ0RGF0YSI6IkxTMHRMUzFDUlVkSlRpQkRSVkpVU1VaSlEwRlVSUzB0TFMwdENrMUpTVVJMZWtORFFXaFBaMEYzU1VKQlowbEpUQzlDZUVJd1EwbFBUVFIzUkZGWlNrdHZXa2xvZG1OT1FWRkZURUpSUVhkR1ZFVlVUVUpGUjBFeFZVVUtRWGhOUzJFelZtbGFXRXAxV2xoU2JHTjZRV2RHZHpCNVRsUkZlRTFFWTNoT1ZFa3lUa1JhWVVkQk9IbE5WRWt4VFZSQmVFNUVSVEZOZWtVd1RteHZkd3BRUkVWbVRVSXdSMEV4VlVWRGFFMVhZVE5XYVZwWFJtdGlWSEJxWWtoV2VtUkhWbmxNVjBacllsZHNkV042UlZwTlFtTkhRVEZWUlVGNFRWRmhNMVpwQ2xwWVNuVmFXRkpzWTNreGFGcEhNWEJpYWtORFFWTkpkMFJSV1VwTGIxcEphSFpqVGtGUlJVSkNVVUZFWjJkRlVFRkVRME5CVVc5RFoyZEZRa0ZOZDNrS2JHMDJkR0l2Y0VNMU1uSjZWRkl3VTBORmRHaFJUblpyYkVsaFNHcE5VRkp5ZGt0SmJqUmpRWGhwTjJGRVUyVnhVbGxNY0hFNVdYY3pPRTE0WlhGWWVncDFXbmczZUhwWmIwRk1RVzVRYTJsdFdtRkhaVmMwVldaeU5raFljMUJxY1hsNlJ6bG1jR000ZUV0dVN6UmhRV2xhVUdKbVpqVXZjWHBSVEdoRVppOU5DbkZpWmtOblNsQXpUMFpYVVdGQlpsTlBRV3RLUjJkWlJVVkhaSEZoWWtOQldXMVdablF4TlVSbGRtWnZUSHAzVFVsSmNHeEpTRWRyZFZCNWRqWjZjbG9LYlRCUk4xWlRkSE14ZEd4YWMwRnNRalpNV1Zka1NscDVOVUZCYWpkd2NuRmphMUpUVDAxaVdrdzVTMVYyV2xsVlIyVlZTMEkwY2s1UVNEWnhTRWhtVHdwdVdEbGxkbkpGZWtWbE4yRm9NQzlJT0V4S2NqSmhWRTkzZVVaVU9VRTNkMkprTW5SVGQwRlBOak5GVW01Uk5HWXliMHA0V2pSWGVsWXdjWFJZZEZaSENrNXZSbkV6VFROUE1YUlBhelJUVXpsbVExVkRRWGRGUVVGaFRsZE5SbEYzUkdkWlJGWlNNRkJCVVVndlFrRlJSRUZuVjJkTlFrMUhRVEZWWkVwUlVVMEtUVUZ2UjBORGMwZEJVVlZHUW5kTlEwMUJkMGRCTVZWa1JYZEZRaTkzVVVOTlFVRjNTSGRaUkZaU01HcENRbWQzUm05QlZUQmljM1ZyV1hwWFprSm5lUXBUTkZRMGJUSlZRMjVOU2xKWE5HZDNSRkZaU2t0dldrbG9kbU5PUVZGRlRFSlJRVVJuWjBWQ1FVUnllbEZQVUN0YWJIUmxNbEJ1U21KRU5FSTBWemt4Q2taYVJUQjJRbVV6VmlzMGEzQXpNVXQyWlZOT09FWXhiVmxVWTFwUGEwSjZZWGxuUW5WcU9VbFFVR1I0U1VOTk0yZ3dUME5ST1VobVkwWnBNRFUzYzFBS1pUaFdkV1p0U25oUlpYTkVRMjkwYzJoWFRsUmpUbTVtZVhscU4xTTNWa3hIV1VsSk9VbFBNa0k1TWxKUU1FTTNUWE0yV25nNWRVOXRSbVZMY201WFlRcElPV0ZtVFN0bmMyRnplRWxTWkdSM2FEVXZXVVpzWVRkUlVEYzFPR3hMTUdkaVRFNXliRTVGYldWRVRVMVlOa1JVV214cFRESkJTVWhLWWtkeFQxUlBDamgwUjBOR1ptYzROV2gxY0RSM09YTnBVRXRxU0VkRk9UbGlVekF4WkhKcVJtYzBXVmRLZG5WVVMyeFZTRlJ0UTNCT2QyMTNSMHhCVFdrd1ExQndRVFVLSzBFNU9HUTJZVWxVSzNWalJVeDNZbVV5VkV0a0wydDRUbEpHYXl0T1JsQjZZV3REVkVKTU9EQnJha2xuWm1kRlVXNVZhRU5HZEdwVU16Qk1ZbFZ2UFFvdExTMHRMVVZPUkNCRFJWSlVTVVpKUTBGVVJTMHRMUzB0Q2c9PSIsImtleURhdGEiOiJMUzB0TFMxQ1JVZEpUaUJTVTBFZ1VGSkpWa0ZVUlNCTFJWa3RMUzB0TFFwTlNVbEZiM2RKUWtGQlMwTkJVVVZCZWtSTFYySnhNWFlyYTB4dVlYWk9Ua2hTU1VsVE1rWkJNaXRUVldodlpVMTNPVWQxT0c5cFptaDNSRWRNZEc5T0NrbzJjRVpuZFcxeU1XcEVabmQ2Umpad1prODFia2gyU0U1cFowRnpRMk1yVTB0YWJHOWFOV0pvVWl0MmIyUmxkeXRQY2t4TllqRXJiSHA2UlhGamNtZ0tiME5LYXpsME9TOXVLM0pPUVhWRlRpODRlWEIwT0V0QmF5OWpORlphUW05Q09VazBRMUZyWVVKblVWRmFNbkJ3YzBsQ2FWcFdLek5ZYTA0Mk9TdG5kZ3BRUVhkbmFXMVZaMk5oVXpRdlN5OXlUM1J0WWxKRWRGWkxNbnBYTWxadGQwTlZTRzkwYUZvd2JHNU1hMEZEVUhWdGRYQjVVa1pKTkhoMGEzWXdjRk01Q214b1VWbzFVVzlJYVhNd09HWnhiMk5rT0Raa1pqRTJLM05VVFZJM2RIRklWRGhtZDNOdGRscHdUVGRFU1ZaUU1FUjJRblF6WVRGTVFVRTNjbU5TUjJRS1JHZ3ZZV2R1Um01b1lrNVlVM0V4WlRGVldUSm5WM0pqZW1NM1Z6QTJWR2hLVERFNFNsRkpSRUZSUVVKQmIwbENRVUZWVDJvMmEyOUNSMnB1VGxWSWVBcDViM2RaZDFSdVZYRTNNa2RYUzA1SlVXaFZjbGxVUkVOaU1tcDRabEJpTWtWWVRsWkNVMjF5ZW1OVFpFdDZNWHBSVkRGUk0zUjZaMDQ1ZGtGbE9YWm5DamRQY25oeEwzbHVjR3MyVTNKVkwwNTJjVlUzWXpGTVJrSmFhVXhQWW1WWGRtRlhkMnhHTWtWNFZ6RmFZa1ZDVWtGSU4wRlBPR1pCVDJ4NmRuUXlXbllLUlVKU05XZFZaa0ZCVUZBM1REaHFVREowVVhwTFlubHRPVk41VWxwbGQwUk9WM05LWkZWcVVrTTViRmt6VVZFeU1VZ3dNMFpsZDNKM2JTOHJTMFYxVUFwT1RtUlBRVTFEZGxWRFVHTTFORVZsVFVKbGFYaDFTM1I2U0RkVWNIQXhNSGMyUVZaRlVHOHdOSGx0ZWtSVFlXOUhTbk4xYUdob01rMDRSSFZRUVc0ckNuWnlaVzFSWTJ4MWRubzFOV2M0UkVOTFNrSllNM1JyUWxCTVRtODBWVTExVUN0QkwzRlllVU13U0ZCNU56aGFaalZLTTI1cWVXNU1SRWhSYzNKVVpuZ0tMM1JQVEZCTFJVTm5XVVZCTkdzMlRrUnBZMDR5Y2l0VmQzRXJPVFZVUnlzMFRYRllUSGx2Y0ZKdFpIbDRkMHRQVEhWT05qTXlWaXR5YWxBM09VMUhaUXBuWlVjMlJXdElVVGswVVhwUE0wcFhaV0kxYUhWNFYxVkdTbEpDYnpScFQyRXpabkZoTVRkUWRsTnpaMjUxV1daVFVHRjFZV015V1hSTVJVOXlNaXRoQ2xwNVptTm5aMUZNWTI5a2VEVnNVMDA1Y1RSd2NHbElPVU5JVmpRclFuRnVRVmgxYkhoSWRqVXdkM2xRUms1SU5EZ3dSakZtY0RCRFoxbEZRVFYyTVc4S1NucElaM1ZrWTFGdVluZGpXbWxuU0VzME5HcFZPRlpEY3pOdk5Ia3dWV2MzY2tSelIwUkVaekZUT0VwaFVVdG9iME4zU2pseWNuaHpUbGxoTjBObmR3cE9jMXBzUlcxNU9UQlNNbWhGY0RaSVJVNTBkbEppUVRCMk4zQjNOelYwVFdvMFUycFZVQ3RQUnpoVVNYUXlRM0ZEY2tkNVIwNU1WMGRtZUdremEza3dDa2hzVTNScFFuTkNUek5SUXpWTWVuVjBUVkZTYURKeVZXZ3dXbUV3TW5GM1JWQnZhMlZUYTBObldVRTBTR1JvVjJGU1RFUmhibmM1Tlc5NFJrZENaa2dLT0VKVFlrdHROQzkxWjJzMVJtZFphREZIUXpCdmNIUlBTVk12WVVkdFZIVjFaMWRGTXpOTmN6TlZhRU01YmtKQ1JXaGtlalUzTjI1a00yWnlWVVZLV1FwdVkzbDNVVlIwYzBsb1UyUnpiSGxTYjBSSVVuQktlVFJQWVhReGFqQjNVRkpzUVd0dlZrbG9XRlJ4SzB4aWMybDBSRGcxY0daWWVuTm5WMFZMUkNzdkNsY3lWRmx0ZUVaM05YY3hXREJXVmxaS1MyTTBPVkZMUW1kUlEzQTNWRzB4ZFRobGNXSXdRbGREV2tOTGVHd3JaamwzZVdWRU4zVnNPVkF2WVRaYWRqQUtaa1Z5ZVRoUFNURmphMnBzTmpNeWFrc3dTMXBOTmxkb2FHRkRRVzl1THpGcE4xaEhMME5CV0hWcmFFbFFhamN5WXpka1JDdFJRMVpIZWpoQ2VHRnNid295ZUdGYUt6WlpOMWd5VTFwSmJ6a3hSbTkzUTBoMmFFdFlXbFZQU0VSa1ZrdE5ORkZHYlRKMGIzZGhUalY2T1dvd0syeG9VMWxJV0d0cVdUSXlXVVl3Q25VNVFXaEpVVXRDWjBkT01qbE9iR1k1ZFc1SlNtRk1UbGR0UTNNNFZXcHdjRzVMVG5SbWVsaHNVVVZFUW14dmRtbzFjR3NyVUcxM1FVSjFNVzVJVkU0S1dVVlZZV1ZGVGpneVJDOUZNRUpSUm5kbllqQTRUbFIzVGtSNE5XNVlNelYyYjJWclNsWXlTRFJMZVdWM1VrMVZkWFExTkUxalIxWlBkbUV2VjJWNE13cFVMM0pGWlVsck9XbzJTMmxHV2tGaU5rMW9jR3RFTVRjeVpFbHpkRVJ4ZEdWTVoyc3lXbnBPZDFGdFdubDFOV1YwWTFSNkNpMHRMUzB0UlU1RUlGSlRRU0JRVWtsV1FWUkZJRXRGV1MwdExTMHRDZz09IiwiY2FEYXRhIjoiTFMwdExTMUNSVWRKVGlCRFJWSlVTVVpKUTBGVVJTMHRMUzB0Q2sxSlNVUkNla05EUVdVclowRjNTVUpCWjBsSlFWSTJaVTVpTVRoVldEUjNSRkZaU2t0dldrbG9kbU5PUVZGRlRFSlJRWGRHVkVWVVRVSkZSMEV4VlVVS1FYaE5TMkV6Vm1sYVdFcDFXbGhTYkdONlFXZEdkekI1VGxSRmVFMUVZM2hPVkVreVRrUmFZVWRCT0hsTlZFa3hUVlJCZUU1RVJURk5la1V3VG14dmR3cEdWRVZVVFVKRlIwRXhWVVZCZUUxTFlUTldhVnBZU25WYVdGSnNZM3BEUTBGVFNYZEVVVmxLUzI5YVNXaDJZMDVCVVVWQ1FsRkJSR2RuUlZCQlJFTkRDa0ZSYjBOblowVkNRVTgzZVhkUmQwaFhhMjFFZEdWeWRXRmliR296VHpkbmNIQlFPVTkxUmtad1dITmphbkJJTjB0SFV6UlJZbll5ZEVWS1NtNUtOVTBLU2pBeVZXdGlRbWRxVGxaNWEyZG5jVUphT0RkSlExZHhlWFJFWkVSNVVFaG1WMWhxVDJodmVtODVWbU5RVkdSU1UzQm5UVWRXVGtGNmVFbE5ibFp2YWdwaVFXbFpiamRvY1daNlVHWktRM2xtSzFwTU5reFhkVFZUTTNaYVVsUlBSR3h1VGs5NE5DdDVUMk5QVjJwYWEyNU1Xa2xRVmt4NVZHVnljMk54YTI5S0NrbEJVbXhyZVN0aGRWVTBjeXR6ZFZoeWRqSXZWMDA1U1c0eWIwSlFkak5rWlU5MFJXbzVNall2UkdSSlRqRmpOM1JVV0hSbWJUbDFSWE4yZUVSRllVa0tSbk5qWlZrdldscHJSVkpZYzJVMlJWQnZjVEE1WlU1a2RVOHlVMVV5UVdSbllsUjNhMGd3TUZnM2NsSlhURzhyTjNKSFFrWnVTR1l6T0RrcllsaEJUUXBQYTFsSGVXSktiMUY2ZWtZek9FbDVSWFZ6TDNaVGFrRlZhRkZIV0dRd1EwRjNSVUZCWVU1YVRVWmpkMFJuV1VSV1VqQlFRVkZJTDBKQlVVUkJaMHRyQ2sxQk9FZEJNVlZrUlhkRlFpOTNVVVpOUVUxQ1FXWTRkMGhSV1VSV1VqQlBRa0paUlVaT1J6ZE1jRWROTVc1M1dVMXJkVVVyU25Sc1FYQjZRMVZXZFVrS1RVSlZSMEV4VldSRlVWRlBUVUY1UTBOdGRERlpiVlo1WW0xV01GcFlUWGRFVVZsS1MyOWFTV2gyWTA1QlVVVk1RbEZCUkdkblJVSkJRbmxJTTJaYWNncHFjV0V3Vm14QlpXZE5NMjFXVmk5a1ExQlZNalZSWjBnelEwWm1kREpGWVZoVVdGWmhTM2RSTjBwRVZFcGFhelpHV1RSNFowVnBhRWR6VWpOTE5IcENDbk5zVldGRGRtWkJkVmRLYmtwck9YZFNjSGMxTlhsS1lrNXFZV3h5Wmk4elprWkxUbUlyV0hGTVRFMVFOR1ZDTWtaNVVXWk5kbGhaUTBrM1NEZEpla2dLVURKVU9FTXZRa1pMVHpGaE5VWkpOSFJQUTBkSGJqUjFXVmh5WlZSYU9VaDBNa3BLZUd3NWJIZGhZazVoU0Rjd1RreFlSbEJhVW5GdGNHTTRaRzgzVXdwQ1pXSkNXRlo0WjJsRFN5dFNiamxLU2tSVWNGQkJhWE5RZHl0WVlTdGliMXBWZDNSSFowcFNNbXh4ZW1aSVRpOVFORlZpUjBwdFl5dGxZWFF3YUZGQkNsSkpPRkptTjNOUGJXdGFTMDFETUVkVlFVUkpkR05qVkdGYWJpczFlbnBtT0VSRVdDOWFabEJIYlRZdmRUWnBUMG80V0VGM0swNHlTRmgyY1VKUldHRUtORlUxYjJ4b1pYTlBlREprWVZSUlBRb3RMUzB0TFVWT1JDQkRSVkpVU1VaSlEwRlVSUzB0TFMwdENnPT0ifX0=
+  name: a3ViZXJuZXRlcy1hZG1pbkBrdWJlcm5ldGVz
+  server: aHR0cHM6Ly8xOTIuMTY4LjE2MC4zNTo2NDQz
+kind: Secret
+metadata:
+  annotations:
+    managed-by: argocd.argoproj.io
+  labels:
+    argocd.argoproj.io/secret-type: cluster
+  name: cluster-192.168.160.35-2651928553
+type: Opaque
+---
+apiVersion: v1
+data:
+  password: MW9vQ0N4akdrUkgtQkxoc0N6c3U=
+  project: ZGVtbw==
+  type: Z2l0
+  url: aHR0cDovL2dpdGxhYi5rOHMubG9jYWwvY291cnNlL2Rldm9wcy1kZW1vLWRlcGxveS5naXQ=
+  username: cm9vdA==
+kind: Secret
+metadata:
+  annotations:
+    managed-by: argocd.argoproj.io
+  labels:
+    argocd.argoproj.io/secret-type: repository
+  name: repo-3490628945
+type: Opaque
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: default
+spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  destinations:
+  - namespace: '*'
+    server: '*'
+  sourceRepos:
+  - '*'
+status: {}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"argoproj.io/v1alpha1","kind":"AppProject","metadata":{"annotations":{},"name":"demo","namespace":"argocd"},"spec":{"destinations":[{"namespace":"*","server":"https://kubernetes.default.svc"}],"sourceRepos":["ssh://git@192.168.160.35:30022/course/devops-demo-deploy.git","http://gitlab.k8s.local/course/devops-demo-deploy.git"]}}
+  name: demo
+spec:
+  destinations:
+  - namespace: '*'
+    server: https://kubernetes.default.svc
+  sourceRepos:
+  - ssh://git@192.168.160.35:30022/course/devops-demo-deploy.git
+  - http://gitlab.k8s.local/course/devops-demo-deploy.git
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: devops-demo
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: demo
+  source:
+    helm:
+      parameters:
+      - name: replicaCount
+        value: "2"
+      - name: image.tag
+        value: v0.1.0
+      valueFiles:
+      - my-values.yaml
+    path: helm
+    repoURL: http://gitlab.k8s.local/course/devops-demo-deploy.git
+    targetRevision: HEAD
+status:
+  health:
+    status: Degraded
+  operationState:
+    finishedAt: "2025-11-24T05:53:15Z"
+    message: 'one or more objects failed to apply, reason: admission webhook "validate.nginx.ingress.kubernetes.io"
+      denied the request: host "gitops-demo.k8s.local" and path "/" is already defined
+      in ingress kube-ops/devops-demo'
+    operation:
+      initiatedBy:
+        username: admin
+      retry: {}
+      sync:
+        revision: 14e50b2b665f0bc6614a62f5b7c66ad42aa72a0b
+        syncStrategy:
+          hook: {}
+    phase: Failed
+    startedAt: "2025-11-24T05:53:03Z"
+    syncResult:
+      resources:
+      - group: ""
+        hookPhase: Running
+        kind: Service
+        message: service/devops-demo created
+        name: devops-demo
+        namespace: default
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: apps
+        hookPhase: Running
+        kind: Deployment
+        message: deployment.apps/devops-demo created
+        name: devops-demo
+        namespace: default
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: networking.k8s.io
+        hookPhase: Failed
+        kind: Ingress
+        message: 'admission webhook "validate.nginx.ingress.kubernetes.io" denied
+          the request: host "gitops-demo.k8s.local" and path "/" is already defined
+          in ingress kube-ops/devops-demo'
+        name: devops-demo
+        namespace: default
+        status: SyncFailed
+        syncPhase: Sync
+        version: v1
+      revision: 14e50b2b665f0bc6614a62f5b7c66ad42aa72a0b
+      source:
+        helm:
+          parameters:
+          - name: replicaCount
+            value: "2"
+          - name: image.tag
+            value: v0.1.0
+          valueFiles:
+          - my-values.yaml
+        path: helm
+        repoURL: http://gitlab.k8s.local/course/devops-demo-deploy.git
+        targetRevision: HEAD
+  reconciledAt: "2025-11-24T06:12:30Z"
+  resources:
+  - health:
+      status: Healthy
+    kind: Service
+    name: devops-demo
+    namespace: default
+    status: Synced
+    version: v1
+  - group: apps
+    health:
+      message: Deployment "devops-demo" exceeded its progress deadline
+      status: Degraded
+    kind: Deployment
+    name: devops-demo
+    namespace: default
+    status: OutOfSync
+    version: v1
+  - group: networking.k8s.io
+    health:
+      status: Missing
+    kind: Ingress
+    name: devops-demo
+    namespace: default
+    status: OutOfSync
+    version: v1
+  sourceType: Helm
+  summary:
+    images:
+    - ghcr.io/cnych/gitops-demo:v0.1.0
+  sync:
+    comparedTo:
+      destination:
+        namespace: default
+        server: https://kubernetes.default.svc
+      source:
+        helm:
+          parameters:
+          - name: replicaCount
+            value: "2"
+          - name: image.tag
+            value: v0.1.0
+          valueFiles:
+          - my-values.yaml
+        path: helm
+        repoURL: http://gitlab.k8s.local/course/devops-demo-deploy.git
+        targetRevision: HEAD
+    revision: ad5ca28453162c3821eb8c86cfa6017d6d72c63d
+    status: OutOfSync
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: guestbook
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: guestbook
+    repoURL: https://github.com/Dragon-zw/argocd-example-apps.git
+    targetRevision: HEAD
+status:
+  health:
+    status: Healthy
+  history:
+  - deployStartedAt: "2025-11-24T04:37:49Z"
+    deployedAt: "2025-11-24T04:37:49Z"
+    id: 0
+    revision: 8439146b1c2a9a5eeea9fa791964e9e5c7c00b43
+    source:
+      path: guestbook
+      repoURL: https://github.com/Dragon-zw/argocd-example-apps.git
+      targetRevision: HEAD
+  operationState:
+    finishedAt: "2025-11-24T04:37:50Z"
+    message: successfully synced (all tasks run)
+    operation:
+      initiatedBy:
+        username: admin
+      retry: {}
+      sync:
+        revision: 8439146b1c2a9a5eeea9fa791964e9e5c7c00b43
+        syncStrategy:
+          hook: {}
+    phase: Succeeded
+    startedAt: "2025-11-24T04:37:49Z"
+    syncResult:
+      resources:
+      - group: ""
+        hookPhase: Running
+        kind: Service
+        message: service/guestbook-ui created
+        name: guestbook-ui
+        namespace: default
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: apps
+        hookPhase: Running
+        kind: Deployment
+        message: deployment.apps/guestbook-ui created
+        name: guestbook-ui
+        namespace: default
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      revision: 8439146b1c2a9a5eeea9fa791964e9e5c7c00b43
+      source:
+        path: guestbook
+        repoURL: https://github.com/Dragon-zw/argocd-example-apps.git
+        targetRevision: HEAD
+  reconciledAt: "2025-11-24T06:12:30Z"
+  resources:
+  - health:
+      status: Healthy
+    kind: Service
+    name: guestbook-ui
+    namespace: default
+    status: Synced
+    version: v1
+  - group: apps
+    health:
+      status: Healthy
+    kind: Deployment
+    name: guestbook-ui
+    namespace: default
+    status: Synced
+    version: v1
+  sourceType: Directory
+  summary:
+    images:
+    - cnych/ks-guestbook-demo:0.2
+  sync:
+    comparedTo:
+      destination:
+        namespace: default
+        server: https://kubernetes.default.svc
+      source:
+        path: guestbook
+        repoURL: https://github.com/Dragon-zw/argocd-example-apps.git
+        targetRevision: HEAD
+    revision: 8439146b1c2a9a5eeea9fa791964e9e5c7c00b43
+    status: Synced
+---
