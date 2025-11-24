@@ -1,0 +1,19 @@
+# grafana-ingress.yaml 
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: linkerd-grafana-ingress
+  namespace: linkerd-viz
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: linkerd-grafana.qikqiak.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: grafana
+                port:
+                  number: 80

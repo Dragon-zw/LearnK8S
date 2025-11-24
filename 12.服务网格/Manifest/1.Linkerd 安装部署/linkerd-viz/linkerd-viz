@@ -1,0 +1,82 @@
+#!/bin/sh
+#
+# Boot prometheus and grafana
+#
+# usage:
+# ./linkerd-viz [platform]
+#
+# platform can be one of: [consul, dcos, k8s]
+
+PLATFORM="${1:-dcos}"
+
+CONSUL_HOST="${CONSUL_HOST:-localhost}"
+MARATHON_HOST="${MARATHON_HOST:-marathon.mesos}"
+PUBLIC_PORT="${PUBLIC_PORT:-3000}"
+STATS_PORT="${STATS_PORT:-9191}"
+SCRAPE_INTERVAL="${SCRAPE_INTERVAL:-30s}"
+
+#
+# init grafana
+#
+
+grafana_ini=$(cat <<EOF
+instance_name = linkerd-viz-grafana
+
+[analytics]
+check_for_updates = false
+
+[auth]
+disable_login_form = true
+
+[auth.anonymous]
+enabled = true
+org_role = Editor
+
+[auth.basic]
+enabled = false
+
+[server]
+http_port = $PUBLIC_PORT
+EOF
+)
+
+printf "%s\n" "$grafana_ini" > /etc/grafana/grafana.ini
+
+prometheus_data_source=$(cat <<EOF
+apiVersion: 1
+datasources:
+- name: prometheus
+  type: prometheus
+  access: proxy
+  orgId: 1
+  url: http://localhost:$STATS_PORT
+  isDefault: true
+  jsonData:
+    timeInterval: "$SCRAPE_INTERVAL"
+  version: 1
+  editable: true
+EOF
+)
+
+printf "%s\n" "$prometheus_data_source" > $GF_PATHS_PROVISIONING/datasources/datasources.yaml
+
+/run.sh &
+
+#
+# init prometheus, exec as pid 1
+#
+
+# modify prometheus config based on env vars
+PROMETHEUS_CONF=/etc/prometheus/prometheus-$PLATFORM.yml
+
+sed -i"" "s@- server:   'localhost:8500'@- server:   '$CONSUL_HOST:8500'@" $PROMETHEUS_CONF
+sed -i"" "s@- 'http://marathon.mesos:8080'@- 'http://$MARATHON_HOST:8080'@" $PROMETHEUS_CONF
+sed -i"" "s@scrape_interval:.*@scrape_interval: $SCRAPE_INTERVAL@" $PROMETHEUS_CONF
+sed -i"" "s@evaluation_interval:.*@evaluation_interval: $SCRAPE_INTERVAL@" $PROMETHEUS_CONF
+
+exec /bin/prometheus \
+  --config.file=$PROMETHEUS_CONF \
+  --storage.tsdb.path=/prometheus \
+  --web.console.libraries=/etc/prometheus/console_libraries \
+  --web.console.templates=/etc/prometheus/consoles \
+  --web.listen-address=:$STATS_PORT

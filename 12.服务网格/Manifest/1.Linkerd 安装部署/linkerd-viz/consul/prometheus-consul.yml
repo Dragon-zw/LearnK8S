@@ -1,0 +1,40 @@
+global:
+  scrape_interval:     30s
+  evaluation_interval: 30s
+
+scrape_configs:
+- job_name: 'linkerd'
+  metrics_path: /admin/metrics/prometheus
+
+  consul_sd_configs:
+  # change these as necessary, this assumes a local consul agent and linkerd is the consul service name
+  - server:   'localhost:8500' # settable via CONSUL_HOST env var
+    services: ['linkerd']
+
+  relabel_configs:
+  # only collect from linkerd's
+  - source_labels: ['__meta_consul_service']
+    regex:         (.*linkerd$)
+    action:        keep
+  # strip off port
+  - source_labels: [__address__]
+    action: replace
+    target_label: instance
+    regex: (.+)(?::\d+)
+    replacement: $1
+
+  metric_relabel_configs:
+  - source_labels: [client]
+    action:        replace
+    target_label:  client
+    regex:         .*/([^/]+)
+    replacement:   $1
+  - source_labels: [service]
+    action:        replace
+    target_label:  service
+    # use this if you use includeTag: true
+    # regex:         .*/([^/]+)/([^/]+)
+    # replacement:   ${2}_${1}
+    # use this if you use includeTag: false
+    regex:         .*/([^/]+)
+    replacement:   $1

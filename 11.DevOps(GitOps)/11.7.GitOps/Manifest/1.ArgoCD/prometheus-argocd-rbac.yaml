@@ -1,0 +1,29 @@
+# prometheus-argocd-rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: prometheus-k8s-argocd
+  namespace: argocd
+rules:
+  # EndpointSlice 是 discovery.k8s.io/v1 的核心资源
+  - apiGroups: ["discovery.k8s.io"]
+    resources: ["endpointslices"]
+    verbs: ["get", "list", "watch"]
+  # Service/Pod 为 core API（""）
+  - apiGroups: [""]
+    resources: ["services", "pods"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: prometheus-k8s-argocd-binding
+  namespace: argocd
+subjects:
+  - kind: ServiceAccount
+    name: prometheus-k8s
+    namespace: monitoring
+roleRef:
+  kind: Role
+  name: prometheus-k8s-argocd
+  apiGroup: rbac.authorization.k8s.io
