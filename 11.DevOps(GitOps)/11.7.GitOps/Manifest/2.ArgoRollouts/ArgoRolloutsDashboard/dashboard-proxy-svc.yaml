@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: argo-rollouts-dashboard-proxy
+  namespace: argo-rollouts
+  labels:
+    app.kubernetes.io/name: argo-rollouts-dashboard-proxy
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 3100
+    targetPort: 3100
+    nodePort: 31000   # 如集群已占用，请更换未占用端口
+  selector: {}
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: argo-rollouts-dashboard-proxy
+  namespace: argo-rollouts
+subsets:
+- addresses:
+  - ip: 192.168.160.35  # 关键：指向运行 kubectl 的“本地主机”
+  ports:
+  - port: 3100

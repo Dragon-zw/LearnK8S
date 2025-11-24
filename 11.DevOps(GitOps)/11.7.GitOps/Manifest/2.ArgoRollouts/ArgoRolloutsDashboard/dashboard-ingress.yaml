@@ -1,0 +1,23 @@
+# dashboard-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argo-rollouts-dashboard-ingress
+  namespace: argo-rollouts
+  annotations:
+    # 使用 nginx.ingress.kubernetes.io/upstream-vhost 指定后端 Host 头
+    nginx.ingress.kubernetes.io/upstream-vhost: "localhost:3100"
+    # 如需鉴权可加：nginx.ingress.kubernetes.io/auth-type: basic 等
+spec:
+  ingressClassName: nginx   # 请与你的 Ingress Controller 一致
+  rules:
+  - host: rollouts-dashboard.qikqiak.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: argo-rollouts-dashboard-proxy
+            port:
+              number: 3100
