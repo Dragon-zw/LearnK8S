@@ -1,0 +1,60 @@
+---
+# Server resource for proxy admin port
+apiVersion: policy.linkerd.io/v1beta3
+kind: Server
+metadata:
+  name: proxy-admin
+  namespace: emojivoto
+  labels:
+    app.kubernetes.io/part-of: emojivoto
+spec:
+  podSelector:
+    matchLabels:
+      linkerd.io/workload-ns: emojivoto
+  port: linkerd-admin
+  proxyProtocol: HTTP/1
+---
+# AuthorizationPolicy to allow tap service account access
+apiVersion: policy.linkerd.io/v1alpha1
+kind: AuthorizationPolicy
+metadata:
+  name: tap-admin-access
+  namespace: emojivoto
+  labels:
+    app.kubernetes.io/part-of: emojivoto
+spec:
+  targetRef:
+    group: policy.linkerd.io
+    kind: Server
+    name: proxy-admin
+  requiredAuthenticationRefs:
+    - kind: ServiceAccount
+      name: tap
+      namespace: linkerd-viz
+---
+# MeshTLSAuthentication for tap service account
+apiVersion: policy.linkerd.io/v1alpha1
+kind: MeshTLSAuthentication
+metadata:
+  name: tap-mesh-tls
+  namespace: emojivoto
+spec:
+  identities:
+    - "tap.linkerd-viz.serviceaccount.identity.linkerd.cluster.local"
+---
+# Alternative AuthorizationPolicy using MeshTLS
+apiVersion: policy.linkerd.io/v1alpha1
+kind: AuthorizationPolicy
+metadata:
+  name: tap-mesh-access
+  namespace: emojivoto
+  labels:
+    app.kubernetes.io/part-of: emojivoto
+spec:
+  targetRef:
+    group: policy.linkerd.io
+    kind: Server
+    name: proxy-admin
+  requiredAuthenticationRefs:
+    - kind: MeshTLSAuthentication
+      name: tap-mesh-tls

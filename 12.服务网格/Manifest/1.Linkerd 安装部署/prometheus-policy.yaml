@@ -1,0 +1,52 @@
+---
+# AuthorizationPolicy：允许 Grafana 访问 Prometheus
+# 绑定到 Linkerd Viz 内置的 prometheus-admin Server
+apiVersion: policy.linkerd.io/v1alpha1
+kind: AuthorizationPolicy
+metadata:
+  name: grafana-to-prometheus
+  namespace: linkerd-viz
+spec:
+  targetRef:
+    group: policy.linkerd.io
+    kind: Server
+    name: prometheus-admin  # 指向现有的 Server
+  requiredAuthenticationRefs:
+    - name: grafana-auth
+      kind: MeshTLSAuthentication
+      group: policy.linkerd.io
+---
+# MeshTLSAuthentication：定义允许的客户端身份
+apiVersion: policy.linkerd.io/v1alpha1
+kind: MeshTLSAuthentication
+metadata:
+  name: grafana-auth
+  namespace: linkerd-viz
+spec:
+  identities:
+    - "grafana.linkerd-viz.serviceaccount.identity.linkerd.cluster.local"
+---
+# 额外：允许 metrics-api 访问 Prometheus
+apiVersion: policy.linkerd.io/v1alpha1
+kind: AuthorizationPolicy
+metadata:
+  name: metrics-api-to-prometheus
+  namespace: linkerd-viz
+spec:
+  targetRef:
+    group: policy.linkerd.io
+    kind: Server
+    name: prometheus-admin  # 指向现有的 Server
+  requiredAuthenticationRefs:
+    - name: metrics-api-auth
+      kind: MeshTLSAuthentication
+      group: policy.linkerd.io
+---
+apiVersion: policy.linkerd.io/v1alpha1
+kind: MeshTLSAuthentication
+metadata:
+  name: metrics-api-auth
+  namespace: linkerd-viz
+spec:
+  identities:
+    - "metrics-api.linkerd-viz.serviceaccount.identity.linkerd.cluster.local"

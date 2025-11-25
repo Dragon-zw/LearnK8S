@@ -256,17 +256,57 @@ spec:
       serviceAccountName: grafana
       automountServiceAccountToken: true
       securityContext:
-        runAsUser: 0
+        runAsNonRoot: true
+        runAsUser: 472  # Grafana 默认用户 ID
+        fsGroup: 472
+        seccompProfile:
+          type: RuntimeDefault
       initContainers: # 通过初始化认为下载所需要的dashboards
         - name: download-dashboards
-          image: "docker.io/curlimages/curl:7.85.0"
+          image: "docker.io/busybox:1.36"
           imagePullPolicy: IfNotPresent
           command: ["/bin/sh"]
-          args: [ "-c", "mkdir -p /var/lib/grafana/dashboards/default && /bin/sh -x /etc/grafana/download_dashboards.sh" ]
+          args:
+            - "-c"
+            - |
+              set -ex
+              mkdir -p /var/lib/grafana/dashboards/default
+              chmod 777 /var/lib/grafana/dashboards/default
+              # 使用 wget 下载 dashboards
+              cd /var/lib/grafana/dashboards/default
+              
+              # 下载所有 Linkerd dashboards
+              wget -q -O authority.json "https://grafana.com/api/dashboards/15482/revisions/2/download" || true
+              wget -q -O cronjob.json "https://grafana.com/api/dashboards/15483/revisions/2/download" || true
+              wget -q -O daemonset.json "https://grafana.com/api/dashboards/15484/revisions/2/download" || true
+              wget -q -O deployment.json "https://grafana.com/api/dashboards/15475/revisions/5/download" || true
+              wget -q -O health.json "https://grafana.com/api/dashboards/15486/revisions/2/download" || true
+              wget -q -O job.json "https://grafana.com/api/dashboards/15487/revisions/2/download" || true
+              wget -q -O kubernetes.json "https://grafana.com/api/dashboards/15479/revisions/2/download" || true
+              wget -q -O multicluster.json "https://grafana.com/api/dashboards/15488/revisions/2/download" || true
+              wget -q -O namespace.json "https://grafana.com/api/dashboards/15478/revisions/2/download" || true
+              wget -q -O pod.json "https://grafana.com/api/dashboards/15477/revisions/2/download" || true
+              wget -q -O prometheus.json "https://grafana.com/api/dashboards/15489/revisions/2/download" || true
+              wget -q -O prometheus-benchmark.json "https://grafana.com/api/dashboards/15490/revisions/2/download" || true
+              wget -q -O replicaset.json "https://grafana.com/api/dashboards/15491/revisions/2/download" || true
+              wget -q -O replicationcontroller.json "https://grafana.com/api/dashboards/15492/revisions/2/download" || true
+              wget -q -O route.json "https://grafana.com/api/dashboards/15481/revisions/2/download" || true
+              wget -q -O service.json "https://grafana.com/api/dashboards/15480/revisions/2/download" || true
+              wget -q -O statefulset.json "https://grafana.com/api/dashboards/15493/revisions/2/download" || true
+              wget -q -O top-line.json "https://grafana.com/api/dashboards/15474/revisions/3/download" || true
+              
+              echo "Dashboard download completed"
+              ls -la
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 472
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
           volumeMounts:
-            - name: config
-              mountPath: "/etc/grafana/download_dashboards.sh"
-              subPath: download_dashboards.sh
             - name: storage
               mountPath: "/var/lib/grafana"
       enableServiceLinks: true
@@ -274,6 +314,15 @@ spec:
         - name: grafana
           image: "docker.io/grafana/grafana:9.4.7"
           imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 472
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
           volumeMounts:
             - name: config
               mountPath: "/etc/grafana/grafana.ini"
@@ -321,6 +370,5 @@ spec:
         - name: dashboards-default
           configMap:
             name: grafana-dashboards-default
-        - name: storage  # 挂载到本地
-          hostPath:
-            path: /data/volumes/grafana
+        - name: storage  # 使用 emptyDir 而不是 hostPath
+          emptyDir: {}
