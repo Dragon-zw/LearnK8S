@@ -251,6 +251,7 @@ spec:
         app.kubernetes.io/instance: grafana
       annotations:
         linkerd.io/inject: enabled
+        config.linkerd.io/skip-outbound-ports: "443"  # 允许初始化容器直接访问 HTTPS
     spec:
       nodeName: hkkck8snode001 # 指定节点
       serviceAccountName: grafana
@@ -272,31 +273,49 @@ spec:
               set -ex
               mkdir -p /var/lib/grafana/dashboards/default
               chmod 777 /var/lib/grafana/dashboards/default
-              # 使用 wget 下载 dashboards
               cd /var/lib/grafana/dashboards/default
               
-              # 下载所有 Linkerd dashboards
-              wget -q -O authority.json "https://grafana.com/api/dashboards/15482/revisions/2/download" || true
-              wget -q -O cronjob.json "https://grafana.com/api/dashboards/15483/revisions/2/download" || true
-              wget -q -O daemonset.json "https://grafana.com/api/dashboards/15484/revisions/2/download" || true
-              wget -q -O deployment.json "https://grafana.com/api/dashboards/15475/revisions/5/download" || true
-              wget -q -O health.json "https://grafana.com/api/dashboards/15486/revisions/2/download" || true
-              wget -q -O job.json "https://grafana.com/api/dashboards/15487/revisions/2/download" || true
-              wget -q -O kubernetes.json "https://grafana.com/api/dashboards/15479/revisions/2/download" || true
-              wget -q -O multicluster.json "https://grafana.com/api/dashboards/15488/revisions/2/download" || true
-              wget -q -O namespace.json "https://grafana.com/api/dashboards/15478/revisions/2/download" || true
-              wget -q -O pod.json "https://grafana.com/api/dashboards/15477/revisions/2/download" || true
-              wget -q -O prometheus.json "https://grafana.com/api/dashboards/15489/revisions/2/download" || true
-              wget -q -O prometheus-benchmark.json "https://grafana.com/api/dashboards/15490/revisions/2/download" || true
-              wget -q -O replicaset.json "https://grafana.com/api/dashboards/15491/revisions/2/download" || true
-              wget -q -O replicationcontroller.json "https://grafana.com/api/dashboards/15492/revisions/2/download" || true
-              wget -q -O route.json "https://grafana.com/api/dashboards/15481/revisions/2/download" || true
-              wget -q -O service.json "https://grafana.com/api/dashboards/15480/revisions/2/download" || true
-              wget -q -O statefulset.json "https://grafana.com/api/dashboards/15493/revisions/2/download" || true
-              wget -q -O top-line.json "https://grafana.com/api/dashboards/15474/revisions/3/download" || true
+              # 定义下载和处理函数
+              download_and_process() {
+                local filename="$1"
+                local url="$2"
+                echo "Downloading $filename from $url..."
+                if wget -q -O "$filename" "$url"; then
+                  echo "Successfully downloaded $filename"
+                  # 替换数据源字段为 prometheus
+                  # 处理多种可能的数据源字段格式
+                  sed -i 's/"datasource":\s*"[^"]*"/"datasource": "prometheus"/g' "$filename" 2>/dev/null || true
+                  sed -i 's/"datasource":\s*{\s*"type":\s*"[^"]*",\s*"uid":\s*"[^"]*"\s*}/"datasource": "prometheus"/g' "$filename" 2>/dev/null || true
+                  echo "Processed datasource in $filename"
+                else
+                  echo "Failed to download $filename"
+                fi
+              }
               
-              echo "Dashboard download completed"
-              ls -la
+              # 下载所有 Linkerd dashboards
+              download_and_process "authority.json" "https://grafana.com/api/dashboards/15482/revisions/2/download"
+              download_and_process "cronjob.json" "https://grafana.com/api/dashboards/15483/revisions/2/download"
+              download_and_process "daemonset.json" "https://grafana.com/api/dashboards/15484/revisions/2/download"
+              download_and_process "deployment.json" "https://grafana.com/api/dashboards/15475/revisions/5/download"
+              download_and_process "health.json" "https://grafana.com/api/dashboards/15486/revisions/2/download"
+              download_and_process "job.json" "https://grafana.com/api/dashboards/15487/revisions/2/download"
+              download_and_process "kubernetes.json" "https://grafana.com/api/dashboards/15479/revisions/2/download"
+              download_and_process "multicluster.json" "https://grafana.com/api/dashboards/15488/revisions/2/download"
+              download_and_process "namespace.json" "https://grafana.com/api/dashboards/15478/revisions/2/download"
+              download_and_process "pod.json" "https://grafana.com/api/dashboards/15477/revisions/2/download"
+              download_and_process "prometheus.json" "https://grafana.com/api/dashboards/15489/revisions/2/download"
+              download_and_process "prometheus-benchmark.json" "https://grafana.com/api/dashboards/15490/revisions/2/download"
+              download_and_process "replicaset.json" "https://grafana.com/api/dashboards/15491/revisions/2/download"
+              download_and_process "replicationcontroller.json" "https://grafana.com/api/dashboards/15492/revisions/2/download"
+              download_and_process "route.json" "https://grafana.com/api/dashboards/15481/revisions/2/download"
+              download_and_process "service.json" "https://grafana.com/api/dashboards/15480/revisions/2/download"
+              download_and_process "statefulset.json" "https://grafana.com/api/dashboards/15493/revisions/2/download"
+              download_and_process "top-line.json" "https://grafana.com/api/dashboards/15474/revisions/3/download"
+              
+              echo "Dashboard download and processing completed"
+              echo "Files in dashboard directory:"
+              ls -lh
+              echo "Total dashboards: $(ls -1 *.json 2>/dev/null | wc -l)"
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true
