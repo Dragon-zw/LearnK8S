@@ -1,0 +1,5 @@
+dapr_config:
+  mtls:
+    enabled: true
+    controlPlaneTrustDomain: "cluster.local"
+    sentryAddress: "dapr-sentry.dapr-system.svc.cluster.local:80"
