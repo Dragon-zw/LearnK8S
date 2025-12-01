@@ -1,0 +1,42 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Emojivoto Web API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/list": {
+      "get": {
+        "summary": "List all emojis",
+        "operationId": "listEmojis",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/vote": {
+      "post": {
+        "summary": "Vote for an emoji",
+        "operationId": "voteEmoji",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/leaderboard": {
+      "get": {
+        "summary": "Get leaderboard",
+        "operationId": "getLeaderboard",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  }
+}
