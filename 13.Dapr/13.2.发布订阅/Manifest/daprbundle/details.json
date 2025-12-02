@@ -1,0 +1,1 @@
+{"daprd": "1.8.4", "dashboard": "0.10.0", "cli": "1.8.1", "daprBinarySubDir": "dist", "dockerImageSubDir": "docker", "daprImageName": "daprio/dapr:1.8.4", "daprImageFileName": "daprio-dapr-1.8.4.tar.gz"}
