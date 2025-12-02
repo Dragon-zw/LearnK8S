@@ -13,6 +13,7 @@ $RECYCLE.BIN/
 # Linux
 *~
 .directory
+*.tar.gz
 
 # IDE
 .vscode/
