@@ -1,0 +1,11 @@
+# dapr-config.yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: dapr-config
+spec:
+  tracing:
+    samplingRate: '1'
+  metric:
+    # enabled: false # 禁用指标
+    enabled: true # 启用指标

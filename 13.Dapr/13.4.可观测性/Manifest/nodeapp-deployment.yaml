@@ -1,0 +1,26 @@
+# nodeapp-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodeapp
+spec:
+  selector:
+    matchLabels:
+      app: node
+  template:
+    metadata:
+      labels:
+        app: node
+      annotations:
+        dapr.io/enabled: 'true'
+        dapr.io/app-id: 'nodeapp'
+        dapr.io/app-port: '3000'
+        dapr.io/enable-metrics: 'true'
+        dapr.io/metrics-port: '9090'
+    spec:
+      containers:
+        - name: node
+          image: dapriosamples/hello-k8s-node:latest
+          ports:
+            - containerPort: 3000
+          imagePullPolicy: Always

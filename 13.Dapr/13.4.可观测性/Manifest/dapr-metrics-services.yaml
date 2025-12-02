@@ -1,0 +1,119 @@
+---
+# Service for addapp metrics
+apiVersion: v1
+kind: Service
+metadata:
+  name: addapp-metrics
+  namespace: default
+  labels:
+    app: add
+    metrics: dapr
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9090"
+    prometheus.io/path: "/metrics"
+spec:
+  clusterIP: None  # Headless service
+  selector:
+    app: add
+  ports:
+  - name: metrics
+    port: 9090
+    targetPort: 9090
+    protocol: TCP
+
+---
+# Service for subtractapp metrics
+apiVersion: v1
+kind: Service
+metadata:
+  name: subtractapp-metrics
+  namespace: default
+  labels:
+    app: subtract
+    metrics: dapr
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9090"
+    prometheus.io/path: "/metrics"
+spec:
+  clusterIP: None
+  selector:
+    app: subtract
+  ports:
+  - name: metrics
+    port: 9090
+    targetPort: 9090
+    protocol: TCP
+
+---
+# Service for divideapp metrics
+apiVersion: v1
+kind: Service
+metadata:
+  name: divideapp-metrics
+  namespace: default
+  labels:
+    app: divide
+    metrics: dapr
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9090"
+    prometheus.io/path: "/metrics"
+spec:
+  clusterIP: None
+  selector:
+    app: divide
+  ports:
+  - name: metrics
+    port: 9090
+    targetPort: 9090
+    protocol: TCP
+
+---
+# Service for multiplyapp metrics
+apiVersion: v1
+kind: Service
+metadata:
+  name: multiplyapp-metrics
+  namespace: default
+  labels:
+    app: multiply
+    metrics: dapr
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9090"
+    prometheus.io/path: "/metrics"
+spec:
+  clusterIP: None
+  selector:
+    app: multiply
+  ports:
+  - name: metrics
+    port: 9090
+    targetPort: 9090
+    protocol: TCP
+
+---
+# Service for calculator-front-end metrics
+apiVersion: v1
+kind: Service
+metadata:
+  name: calculator-front-end-metrics
+  namespace: default
+  labels:
+    app: calculator-front-end
+    metrics: dapr
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9090"
+    prometheus.io/path: "/metrics"
+spec:
+  clusterIP: None
+  selector:
+    app: calculator-front-end
+  ports:
+  - name: metrics
+    port: 9090
+    targetPort: 9090
+    protocol: TCP

@@ -1,0 +1,27 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: dapr-calculator-apps
+  namespace: default
+  labels:
+    app: dapr-calculator
+    prometheus: kube-prometheus  # 确保 Prometheus Operator 能发现此 ServiceMonitor
+spec:
+  selector:
+    matchLabels:
+      metrics: dapr  # 匹配所有带有 metrics=dapr 标签的 Service
+  namespaceSelector:
+    matchNames:
+    - default
+  endpoints:
+  - port: metrics  # 对应 Service 中的 port name
+    path: /metrics
+    interval: 30s
+    scrapeTimeout: 10s
+    relabelings:
+    - sourceLabels: [__meta_kubernetes_pod_name]
+      targetLabel: pod
+    - sourceLabels: [__meta_kubernetes_pod_label_app]
+      targetLabel: app
+    - sourceLabels: [__meta_kubernetes_namespace]
+      targetLabel: namespace
