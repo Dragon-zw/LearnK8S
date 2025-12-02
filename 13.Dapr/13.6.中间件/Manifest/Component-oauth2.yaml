@@ -1,0 +1,22 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: oauth2
+spec:
+  type: middleware.http.oauth2
+  version: v1
+  metadata:
+    - name: clientId
+      value: 'xxx'
+    - name: clientSecret
+      value: 'xxx'
+    - name: scopes
+      value: ''
+    - name: authURL
+      value: 'https://github.com/login/oauth/authorize'
+    - name: tokenURL
+      value: 'https://github.com/login/oauth/access_token'
+    - name: redirectURL
+      value: 'http://echo.dapr.local'
+    - name: authHeaderName
+      value: 'authorization'

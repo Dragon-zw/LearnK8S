@@ -1,0 +1,46 @@
+# echoapp-deploymentIngress.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echoapp
+  labels:
+    app: echo
+spec:
+  selector:
+    matchLabels:
+      app: echo
+  template:
+    metadata:
+      labels:
+        app: echo
+      annotations:
+        dapr.io/enabled: 'true'
+        dapr.io/app-id: 'echoapp'
+        dapr.io/app-port: '3000'
+        dapr.io/config: 'pipeline'
+        dapr.io/sidecar-listen-addresses: '0.0.0.0'
+    spec:
+      containers:
+        - name: echo
+          image: dapriosamples/middleware-echoapp:latest
+          ports:
+            - containerPort: 3000
+          imagePullPolicy: IfNotPresent
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: echo-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: echo.dapr.local
+      http:
+        paths:
+          - backend:
+              service:
+                name: echoapp-dapr
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
