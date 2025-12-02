@@ -1,0 +1,20 @@
+# nodeappconfig.yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: nodeappconfig
+spec:
+  tracing:
+    samplingRate: '1'
+  accessControl:
+    defaultAction: allow
+    trustDomain: 'public'
+    policies:
+      - appId: pythonapp
+        defaultAction: allow
+        trustDomain: 'myDomain'
+        namespace: 'default'
+        operations:
+          - name: /neworder
+            httpVerb: ['POST']
+            action: deny

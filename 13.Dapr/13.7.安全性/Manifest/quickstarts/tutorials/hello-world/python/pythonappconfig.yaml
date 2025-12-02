@@ -1,0 +1,11 @@
+# pythonappconfig.yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: pythonappconfig
+spec:
+  tracing:
+    samplingRate: '1'
+  accessControl:
+    defaultAction: allow
+    trustDomain: 'myDomain'
