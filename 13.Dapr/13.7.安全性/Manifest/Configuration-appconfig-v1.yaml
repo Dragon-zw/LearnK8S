@@ -1,0 +1,14 @@
+# Configuration-appconfig-v1.yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: appconfig
+spec:
+  accessControl:
+    defaultAction: deny
+    trustDomain: 'public'
+    policies:
+      - appId: app1
+        defaultAction: allow
+        trustDomain: 'public'
+        namespace: 'default'

@@ -1,0 +1,12 @@
+# Configuration-myappconfig-v2.yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: myappconfig
+  namespace: default
+spec:
+  api:
+    allowed:
+      - name: state
+        version: v1.0
+        protocol: http

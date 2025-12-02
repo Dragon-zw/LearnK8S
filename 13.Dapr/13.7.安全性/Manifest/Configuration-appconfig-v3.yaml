@@ -1,0 +1,25 @@
+# Configuration-appconfig-v3.yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: appconfig
+spec:
+  accessControl:
+    defaultAction: deny
+    trustDomain: 'public'
+    policies:
+      - appId: app1
+        defaultAction: deny
+        trustDomain: 'public'
+        namespace: 'default'
+        operations:
+          - name: /op1
+            httpVerb: ['POST', 'PUT']
+            action: allow
+      - appId: app2
+        defaultAction: deny
+        trustDomain: 'myDomain'
+        namespace: 'ns1'
+        operations:
+          - name: /op2
+            action: allow

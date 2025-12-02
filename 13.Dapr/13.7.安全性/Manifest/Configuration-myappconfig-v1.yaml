@@ -1,0 +1,9 @@
+# Configuration-myappconfig-v1.yaml
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: myappconfig
+  namespace: default
+spec:
+  tracing:
+    samplingRate: '1'
