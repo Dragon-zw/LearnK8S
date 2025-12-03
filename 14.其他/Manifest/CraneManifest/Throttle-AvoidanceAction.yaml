@@ -1,0 +1,14 @@
+# Throttle-AvoidanceAction.yaml
+apiVersion: ensurance.crane.io/v1alpha1
+kind: AvoidanceAction
+metadata:
+  name: throttle
+  labels:
+    app: system
+spec:
+  coolDownSeconds: 300
+  throttle:
+    cpuThrottle:
+      minCPURatio: 10 # CPU 配额的最小比例，如果 pod 被限制低于这个比例，就会被设置为这个
+      stepCPURatio: 10 # 该配置设置给Throttle Action。它将在每个触发的回避动作中减少这个 CPU 配额占比。它会在每个恢复动作中增加这个 CPU 配额占比
+  description: 'throttle low priority pods'

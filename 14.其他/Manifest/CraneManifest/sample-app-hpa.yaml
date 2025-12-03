@@ -1,0 +1,22 @@
+# sample-app-hpa.yaml
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: sample-app-hpa
+spec:
+  # HPA的伸缩对象描述，HPA 会动态修改该对象的 Pod 数量。
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: sample-app
+  # HPA 的最小 Pod 数量和最大 Pod 数量。
+  minReplicas: 1
+  maxReplicas: 10
+  # 监控的指标数组，支持多种类型的指标共存。
+  metrics:
+    - type: Pods
+      pods:
+        #使用指标：pods/http_requests。
+        metricName: http_requests
+        # AverageValue 类型的目标值，Pods 指标类型下只支持 AverageValue 类型的目标值。
+        targetAverageValue: 500m # 当出现了小数点，K8s 又需要高精度时，会使用单位 m 或k。例如1001m=1.001，1k=1000。

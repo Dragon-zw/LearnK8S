@@ -1,0 +1,45 @@
+# sample-app-ehpa.yaml
+apiVersion: autoscaling.crane.io/v1alpha1
+kind: EffectiveHorizontalPodAutoscaler
+metadata:
+  name: sample-app-ehpa
+  annotations:
+    # metric-query.autoscaling.crane.io 是固定的前缀
+    # 后面是 prefix.Metrics，前缀支持 pods、resource、external 类型
+    metric-query.autoscaling.crane.io/pods.http_requests: 'sum(rate(http_requests_total[5m])) by (pod)'
+spec:
+  # ScaleTargetRef 是对需要缩放的工作负载的引用
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: sample-app
+  # minReplicas 是可以缩小到的缩放目标的最小副本数
+  minReplicas: 1
+  # maxReplicas 是可以扩大到的缩放目标的最大副本数
+  maxReplicas: 10
+  # scaleStrategy 表示缩放目标的策略，值可以是 Auto 或 Manual
+  scaleStrategy: Auto
+  # metrics 包含用于计算所需副本数的规范。
+  metrics:
+    # 在使用预测算法预测时，你可能会担心预测数据不准带来一定的风险，EHPA 在计算副本数时，不仅会按预测数据计算，同时也会考虑实际监控数据来兜底，提升弹性的安全性，所以可以定义下面的 Resource 监控数据来兜底
+    # - type: Resource
+    #   resource:
+    #     name: cpu
+    #     target:
+    #       type: Utilization
+    #       averageUtilization: 50
+    - type: Pods
+      pods:
+        metric:
+          name: http_requests # 和上面注解中的 metric-query.autoscaling.crane.io/pods.(.*) 必须一致
+        target:
+          type: AverageValue
+          averageValue: 500m # 当出现了小数点，K8s 又需要高精度时，会使用单位 m 或k。例如1001m=1.001，1k=1000。
+  # prediction 定义了预测资源的配置，如果未指定，则默认不启用预测功能
+  prediction:
+    predictionWindowSeconds: 3600 # PredictionWindowSeconds 是预测未来指标的时间窗口
+    predictionAlgorithm:
+      algorithmType: dsp # 指定dsp为预测算法
+      dsp:
+        sampleInterval: '60s' # 监控数据的采样间隔为1分钟
+        historyLength: '7d' # 拉取过去7天的监控指标作为预测的依据

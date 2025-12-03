@@ -1,0 +1,12 @@
+# Eviction-AvoidanceAction.yaml
+apiVersion: ensurance.crane.io/v1alpha1
+kind: AvoidanceAction
+metadata:
+  name: eviction
+  labels:
+    app: system
+spec:
+  coolDownSeconds: 300
+  eviction:
+    terminationGracePeriodSeconds: 30 # pod 需要优雅终止的持续时间（以秒为单位）
+  description: 'evict low priority pods'

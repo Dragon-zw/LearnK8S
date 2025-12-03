@@ -1,0 +1,26 @@
+# nginx-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      annotations:
+        topology.crane.io/topology-awareness: 'true' # 添加注解，表示Pod需要感知CPU拓扑，资源分配不允许跨NUMA。若不指定，则拓扑策略默认继承节点上的topology.crane.io/topology-awareness标签
+        topology.crane.io/cpu-policy: 'exclusive' # 添加注解，表示Pod的CPU分配策略为exclusive策略。
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - image: nginx
+          name: nginx
+          resources:
+            limits:
+              cpu: '2' # 需要limits.cpu值，如果要开启绑核，则该值必须等于requests.cpu。
+              memory: 2Gi

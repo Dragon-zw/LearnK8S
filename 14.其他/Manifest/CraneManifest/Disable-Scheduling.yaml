@@ -1,0 +1,42 @@
+# Disable-Scheduling.yaml
+apiVersion: ensurance.crane.io/v1alpha1
+kind: AvoidanceAction
+metadata:
+  labels:
+    app: system
+  name: disablescheduling
+spec:
+  description: disable schedule new pods to the node
+  coolDownSeconds: 300 # 节点从禁止调度状态到正常状态的最小等待时间
+---
+apiVersion: ensurance.crane.io/v1alpha1
+kind: NodeQOS
+metadata:
+  name: 'watermark1'
+  labels:
+    app: 'system'
+spec:
+  nodeQualityProbe:
+    timeoutSeconds: 10
+    nodeLocalGet:
+      localCacheTTLSeconds: 60
+  rules:
+    - name: 'cpu-usage'
+      avoidanceThreshold: 2 # 当达到阈值并持续多次，那么我们认为规则被触发
+      restoreThreshold: 2 # 当阈值未达到并继续多次, 那么我们认为规则已恢复
+      actionName: 'disablescheduling' # 关联到 AvoidanceAction 名称
+      strategy: 'None' # 动作的策略，你可以将其设置为“Preview”以不实际执行
+      metricRule:
+        name: 'cpu_total_usage' # 指标名称
+        value: 4000 # 指标的阈值
+---
+apiVersion: ensurance.crane.io/v1alpha1
+kind: PodQOS
+metadata:
+  name: all-elastic-pods
+spec:
+  allowedActions: # 被该PodQOS关联的pod允许被执行的action为eviction
+    - eviction
+  labelSelector: # 通过label selector关联具有preemptible_job: “true"的pod
+    matchLabels:
+      preemptible_job: 'true'

@@ -1,0 +1,21 @@
+apiVersion: v2
+appVersion: v0.3.0
+description: A Helm chart for crane fadvisor
+home: https://github.com/gocrane/fadvisor
+icon: https://github.com/gocrane/fadvisor/blob/main/docs/images/fadvisor.png
+keywords:
+- kubernetes
+- finops
+- cost-insighting
+- resources
+- cost-visualization
+- cost-breakdown
+- cost-comparator
+- serveless
+- serverful
+- multi-cloud
+name: fadvisor
+sources:
+- https://github.com/gocrane/fadvisor
+type: application
+version: 0.3.0

@@ -1,0 +1,14 @@
+# Throttle-PodQOS.yaml
+apiVersion: ensurance.crane.io/v1alpha1
+kind: PodQOS
+metadata:
+  name: all-be-pods
+spec:
+  allowedActions:
+    - throttle
+  scopeSelector:
+    matchExpressions:
+      - operator: In
+        scopeName: QOSClass
+        values:
+          - BestEffort
