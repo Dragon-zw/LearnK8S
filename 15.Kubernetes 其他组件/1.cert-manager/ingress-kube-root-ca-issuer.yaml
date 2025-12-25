@@ -1,0 +1,38 @@
+# ingress-kube-root-ca-issuer.yaml
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: http-dump-cert
+  namespace: default
+spec:
+  secretName: http-dump-cert
+  commonName: "http-dump.example.com"
+  issuerRef:
+    name: kube-root-ca-issuer  # 引用 kube-root-ca-issuer 
+    kind: ClusterIssuer        # 类型为 ClusterIssuer
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tls-ingress
+  namespace: default
+  annotations:
+    cert-manager.io/issuer: kube-root-ca-issuer # 引用 kube-root-ca-issuer 
+spec:
+  ingressClassName: cilium
+  rules:
+    - host: http-dump.example.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: http-dump
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - http-dump.example.com
+      secretName: http-dump-cert   # 引用 secret 

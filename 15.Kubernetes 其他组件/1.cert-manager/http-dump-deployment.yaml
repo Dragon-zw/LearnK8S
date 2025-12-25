@@ -1,0 +1,54 @@
+# http-dump-deployment.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: http-dump
+  namespace: default
+  labels:
+    app: http-dump
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: http-dump
+  template:
+    metadata:
+      labels:
+        app: http-dump
+    spec:
+      containers:
+      - name: http-dump
+        image: mendhak/http-https-echo:latest
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        env:
+        - name: HTTP_PORT
+          value: "8080"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: http-dump
+  namespace: default
+  labels:
+    app: http-dump
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  selector:
+    app: http-dump
+

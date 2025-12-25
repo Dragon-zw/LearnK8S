@@ -1,0 +1,6 @@
+app:
+  ingress:
+    enabled: true  # 启用 ingress
+    hosts:
+      - dashboard.example.io
+    ingressClassName: nginx

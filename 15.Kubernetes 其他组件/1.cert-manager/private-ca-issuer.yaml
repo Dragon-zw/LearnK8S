@@ -1,0 +1,38 @@
+# private-ca-issuer.yaml
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: http-dump-cert
+  namespace: default
+spec:
+  secretName: http-dump-cert
+  commonName: "http-dump.example.com"
+  issuerRef:
+    name: private-ca-issuer # 使用 private-ca-issuer 
+    kind: Issuer            # 类型为 Issuer
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tls-ingress
+  namespace: default
+  annotations:
+    cert-manager.io/issuer: private-ca-issuer # 使用 private-ca-issuer 
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: http-dump.example.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: http-dump
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - http-dump.example.com
+      secretName: http-dump-cert
