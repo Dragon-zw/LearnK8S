@@ -1,0 +1,36 @@
+# nacos-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nacos-ingress
+  namespace: nacos
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/rewrite-target: /nacos/$2
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location = / {
+        return 302 /nacos/;
+      }
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: nacos.example.io
+    http:
+      paths:
+      # 处理根路径，重定向到 /nacos/
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nacos-headless
+            port:
+              number: 8848
+      # 处理 /nacos/ 路径
+      - path: /nacos(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: nacos-headless
+            port:
+              number: 8848

@@ -1,0 +1,27 @@
+# nacos-cluster.yaml
+apiVersion: nacos.io/v1alpha1
+kind: Nacos
+metadata:
+  name: nacos
+  namespace: nacos
+spec:
+  type: cluster
+  image: nacos/nacos-server:v2.5.1
+  replicas: 3
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      cpu: 1
+      memory: 2Gi
+  # mysqlInitImage: "registry.cn-hangzhou.aliyuncs.com/choerodon-tools/mysql-client:10.2.15-r0"
+  database:
+    type: mysql
+    mysqlHost: 192.168.160.35
+    mysqlDb: nacos_v25
+    mysqlUser: nacos
+    mysqlPort: "3306"
+    mysqlPassword: "changeme"
+  config: |
+    management.endpoints.web.exposure.include=*
