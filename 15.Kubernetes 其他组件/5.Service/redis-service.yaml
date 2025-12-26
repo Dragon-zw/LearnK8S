@@ -1,0 +1,13 @@
+# redis-service.yaml
+apiVersion: v1  
+kind: Service  
+metadata:  
+  name: redis-service
+spec:  
+  type: ClusterIP  # 可省略（默认类型）  
+  selector:  
+    app: redis  
+  ports:  
+    - protocol: TCP  
+      port: 6379    # Service端口  
+      targetPort: 6379  # Pod端口  
