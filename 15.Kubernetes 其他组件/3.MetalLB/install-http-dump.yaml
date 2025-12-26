@@ -1,0 +1,39 @@
+# install-http-dump.yaml 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: http-dump
+  name: http-dump
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: http-dump
+  template:
+    metadata:
+      labels:
+        app: http-dump
+    spec:
+      containers:
+        - image: registry.cn-beijing.aliyuncs.com/kube-mirrors/http-dump:latest
+          name: http-dump
+          ports:
+            - name: http
+              containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: http-dump
+  name: http-dump-svc
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: http
+  selector:
+    app: http-dump
+  sessionAffinity: None
+  type: LoadBalancer  # 关键配置 Service 需要配置为 LoadBalancer
