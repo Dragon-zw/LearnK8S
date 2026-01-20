@@ -1,0 +1,62 @@
+# install-victorialogs.yaml
+# deploy victorialogs
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: victorialogs
+  namespace: monitor
+  labels:
+    app: victorialogs
+spec:
+  selector:
+    matchLabels:
+      app: victorialogs
+  template:
+    metadata:
+      labels:
+        app: victorialogs
+    spec:
+      containers:
+        - name: victorialogs
+          image: victoriametrics/victoria-logs:latest
+          # command:
+          #   - -storageDataPath=/vlogs  # 指定日志存储路径
+          ports:
+            - containerPort: 9428
+          volumeMounts:
+            - name: logs
+              mountPath: victoria-logs-data # 默认日志存储路径
+      volumes:
+        - name: logs
+          persistentVolumeClaim:
+            claimName: victorialogs-pvc
+---
+# deploy victorialogs service
+apiVersion: v1
+kind: Service
+metadata:
+  name: victorialogs
+  namespace: monitor
+  labels:
+    app: victorialogs
+spec:
+  ports:
+    - port: 9428
+      targetPort: 9428
+  type: NodePort
+  selector:
+    app: victorialogs
+---
+# deploy victorialogs pvc
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: victorialogs-pvc
+  namespace: monitor
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: managed-nfs-storage
+  resources:
+    requests:
+      storage: 10Gi
